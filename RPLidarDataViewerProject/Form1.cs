@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,6 +14,7 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static RPLidarDataViewerProject.Form1;
 using static System.Windows.Forms.AxHost;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 
@@ -23,6 +25,19 @@ namespace RPLidarDataViewerProject
         public Form1()
         {
             InitializeComponent();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            //Seri Port İsimleri combobox icerisine eklendi.
+            string[] serialPortListArray = SerialPort.GetPortNames();
+            foreach (string serialPort in serialPortListArray)
+            {
+                comboBoxSeriPortList.Items.Add(serialPort);
+            }
+
+            int serialPortCounts = comboBoxSeriPortList.Items.Count;
+            if (serialPortCounts > 0) comboBoxSeriPortList.SelectedIndex = 0;
         }
 
         private void buttonOpenFile_Click(object sender, EventArgs e)
@@ -204,7 +219,7 @@ namespace RPLidarDataViewerProject
         }
 
         //RPLidar datası için kullanılan veri yapısı.
-        struct RPLidarData
+        public struct RPLidarData
         {
             public byte quality;
             public UInt16 angle;
@@ -335,6 +350,158 @@ namespace RPLidarDataViewerProject
 
             float scaledValue = (value * scale) - offset;
             return (scaledValue);
+        }
+
+        //Serial Port Data Recieved Event
+        private void serialPort1_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {           
+            if(!checkResponseData(rpLidarScanIDResponse, rpLidarScanIDResponseData))
+            {
+                serialPort1.Read(rpLidarScanIDResponseData, 0, 7);
+            }
+            else if(checkResponseData(rpLidarScanIDResponse, rpLidarScanIDResponseData) && serialPortRPLidarDataIndex < 30)
+            {
+                serialPort1.Read(spLidarScanRawDataBuf, 0, 5);
+                serialPortRPLidarData[serialPortRPLidarDataIndex] = createRPlidarDataFromRawData(spLidarScanRawDataBuf);
+                textBoxSeriPortDataReceive.Invoke(new showTextSerialPortData(writeToTextBox), serialPortRPLidarData[serialPortRPLidarDataIndex]);
+                serialPortRPLidarDataIndex++;
+            }
+            else
+            {
+                serialPort1.Write(new byte[] { 0xA5, 0x25 }, 0, 2);
+                serialPort1.Write(new byte[] { 0xA5, 0x25 }, 0, 2);
+                serialPort1.Close();
+            }
+        }
+
+        //Tread cakısması hatasının giderilmesi icin kullanılmıstır.
+        public delegate void showTextSerialPortData(RPLidarData data);
+        public void writeToTextBox(RPLidarData data)
+        {
+            uint tempQuality = (uint)data.quality;
+            float tempAngle = (float)((double)data.angle / 64.0);
+            float tempDistance = (float)((double)data.distance / 4.0);
+
+            textBoxSeriPortDataReceive.Text += "Quality:" + tempQuality + "\t";
+            textBoxSeriPortDataReceive.Text += "Angle:" + tempAngle + "\t";
+            textBoxSeriPortDataReceive.Text += "Distance:" + tempDistance + "\t";
+            textBoxSeriPortDataReceive.Text += "\r\n";
+        }
+
+        private void buttonSeriPortCon_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (serialPort1.IsOpen)
+            {
+                //Open File button enable hale getiriliyor.
+                buttonOpenFile.Enabled = true;
+
+                //Combo box enable hale getiriliyor.
+                comboBoxSeriPortList.Enabled = true;
+                
+                try
+                {
+                    serialPort1.Close();
+                    buttonSeriPortCon.Text = "Serial Port Connect";
+
+                    labelSerialPortInfo.Text = "Serial Port Info:";
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Serial Port Not Closed.\n{ex.Message}", "Error", MessageBoxButtons.OK);
+                }
+            }
+            else
+            {
+                //Open File button enable hale getiriliyor.
+                buttonOpenFile.Enabled = false;
+
+                //Combo box disable hale getiriliyor.
+                comboBoxSeriPortList.Enabled = false;
+
+                //Serial Port Parameters setting.
+                serialPort1.PortName = comboBoxSeriPortList.Text;
+
+                //Open serial port
+                try
+                {
+                    serialPort1.Open();
+                    buttonSeriPortCon.Text = "Serial Port Discon.";
+
+                    string[] serialPortİnfo = new string[5];
+                    serialPortİnfo[0] = serialPort1.PortName;
+                    serialPortİnfo[1] = serialPort1.BaudRate.ToString();
+                    serialPortİnfo[2] = serialPort1.Parity.ToString();
+                    serialPortİnfo[3] = serialPort1.StopBits.ToString();
+                    serialPortİnfo[4] = serialPort1.DataBits.ToString();
+
+                    labelSerialPortInfo.Text = "Serial Port Info:";
+
+                    foreach (var info in serialPortİnfo)
+                    {
+                        labelSerialPortInfo.Text += "  " + info;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Serial Port Not Opened.\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+        
+        //List<RPLidarData> rpLidarDataList = new List<RPLidarData>();
+        RPLidarData[] serialPortRPLidarData = new RPLidarData[30];
+        int serialPortRPLidarDataIndex = 0;
+        Byte[] spLidarScanRawDataBuf = new Byte[5];
+        Byte[] rpLidarScanIDResponse = new Byte[] {0xA5, 0x5A, 0x05, 0x00, 0x00, 0x40, 0x81};
+        Byte[] rpLidarScanIDResponseData = new Byte[7];
+
+        public bool checkResponseData(Byte[] firstBytes, Byte[] secondBytes)
+        {
+            return firstBytes.SequenceEqual(secondBytes);
+        }
+
+        private void buttonRPLidarScanID_Click(object sender, EventArgs e)
+        {
+            if(serialPort1.IsOpen) serialPort1.Write(new byte[] { 0xA5, 0x20 }, 0, 2);
+        }
+
+        private void buttonRPLidarStopID_Click(object sender, EventArgs e)
+        {
+            if (serialPort1.IsOpen) serialPort1.Write(new byte[] { 0xA5, 0x25 }, 0, 2);
+        }
+
+        public void drawLidarScreen(RPLidarData[] data, uint dataCount, Bitmap bmp)
+        {
+            //Lidar data viewer icin bitmap tanımı.
+            Bitmap lidarBmp = createLidarViewerPanel(pictureBoxRPLidarDataViewer.Size.Width, pictureBoxRPLidarDataViewer.Size.Height);
+
+            for (int i = 0; i < dataCount; i++)
+            {
+                uint tempQuality = (uint)data[i].quality;
+                float tempAngle = (float)((double)data[i].angle / 64.0);
+                float tempDistance = (float)((double)data[i].distance / 4.0);
+
+                lidarBmp = createLidarDataGraph(new Pen(Brushes.Yellow, 3), (float)tempAngle, (float)tempDistance, bmp, 150, 6000);
+            }
+
+            pictureBoxRPLidarDataViewer.Image = lidarBmp;
+        }
+
+        public RPLidarData createRPlidarDataFromRawData(Byte[] bytes)
+        {
+            RPLidarData tempRPLidarData = new RPLidarData();
+
+            //Quality
+            tempRPLidarData.quality = (byte)(bytes[0] >> 2);
+            //Angle
+            tempRPLidarData.angle = (UInt16)(bytes[1] << 8);
+            tempRPLidarData.angle += (UInt16)bytes[2];
+            tempRPLidarData.angle = (UInt16)(tempRPLidarData.angle >> 1);
+            //Distance
+            tempRPLidarData.distance = (UInt16)(bytes[3] << 8);
+            tempRPLidarData.distance += (UInt16)bytes[4];
+
+            return tempRPLidarData;
         }
     }
 }

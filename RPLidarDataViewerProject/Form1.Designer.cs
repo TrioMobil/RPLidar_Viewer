@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.buttonOpenFile = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.textBoxOpenFile = new System.Windows.Forms.TextBox();
@@ -64,7 +65,17 @@
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.textBoxLidarZoneWidthOffset = new System.Windows.Forms.TextBox();
+            this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.labelSeriPortName = new System.Windows.Forms.Label();
+            this.labelSerialPortInfo = new System.Windows.Forms.Label();
+            this.buttonSeriPortCon = new System.Windows.Forms.Button();
+            this.comboBoxSeriPortList = new System.Windows.Forms.ComboBox();
+            this.textBoxSeriPortDataReceive = new System.Windows.Forms.TextBox();
+            this.buttonRPLidarStopID = new System.Windows.Forms.Button();
+            this.buttonRPLidarScanID = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxRPLidarDataViewer)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonOpenFile
@@ -80,20 +91,18 @@
             // 
             // textBoxOpenFile
             // 
-            this.textBoxOpenFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxOpenFile.Location = new System.Drawing.Point(12, 12);
             this.textBoxOpenFile.Multiline = true;
             this.textBoxOpenFile.Name = "textBoxOpenFile";
             this.textBoxOpenFile.ReadOnly = true;
             this.textBoxOpenFile.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxOpenFile.Size = new System.Drawing.Size(1065, 175);
+            this.textBoxOpenFile.Size = new System.Drawing.Size(500, 175);
             this.textBoxOpenFile.TabIndex = 2;
             // 
             // listBoxRPLidarData
             // 
             this.listBoxRPLidarData.FormattingEnabled = true;
-            this.listBoxRPLidarData.Location = new System.Drawing.Point(577, 284);
+            this.listBoxRPLidarData.Location = new System.Drawing.Point(577, 37);
             this.listBoxRPLidarData.Name = "listBoxRPLidarData";
             this.listBoxRPLidarData.Size = new System.Drawing.Size(500, 121);
             this.listBoxRPLidarData.TabIndex = 3;
@@ -102,7 +111,7 @@
             // 
             this.labelLidarData.AutoSize = true;
             this.labelLidarData.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.labelLidarData.Location = new System.Drawing.Point(577, 256);
+            this.labelLidarData.Location = new System.Drawing.Point(577, 9);
             this.labelLidarData.Name = "labelLidarData";
             this.labelLidarData.Size = new System.Drawing.Size(128, 25);
             this.labelLidarData.TabIndex = 4;
@@ -111,7 +120,7 @@
             // listBoxRPLidarStartBits
             // 
             this.listBoxRPLidarStartBits.FormattingEnabled = true;
-            this.listBoxRPLidarStartBits.Location = new System.Drawing.Point(577, 436);
+            this.listBoxRPLidarStartBits.Location = new System.Drawing.Point(577, 189);
             this.listBoxRPLidarStartBits.Name = "listBoxRPLidarStartBits";
             this.listBoxRPLidarStartBits.Size = new System.Drawing.Size(500, 121);
             this.listBoxRPLidarStartBits.TabIndex = 5;
@@ -120,7 +129,7 @@
             // 
             this.labelLİdarDataStartBits.AutoSize = true;
             this.labelLİdarDataStartBits.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.labelLİdarDataStartBits.Location = new System.Drawing.Point(577, 408);
+            this.labelLİdarDataStartBits.Location = new System.Drawing.Point(577, 161);
             this.labelLİdarDataStartBits.Name = "labelLİdarDataStartBits";
             this.labelLİdarDataStartBits.Size = new System.Drawing.Size(232, 25);
             this.labelLİdarDataStartBits.TabIndex = 6;
@@ -130,7 +139,7 @@
             // 
             this.labelLidarDataQuality.AutoSize = true;
             this.labelLidarDataQuality.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.labelLidarDataQuality.Location = new System.Drawing.Point(572, 560);
+            this.labelLidarDataQuality.Location = new System.Drawing.Point(572, 313);
             this.labelLidarDataQuality.Name = "labelLidarDataQuality";
             this.labelLidarDataQuality.Size = new System.Drawing.Size(293, 25);
             this.labelLidarDataQuality.TabIndex = 8;
@@ -139,14 +148,14 @@
             // listBoxRPLidarDataQuality
             // 
             this.listBoxRPLidarDataQuality.FormattingEnabled = true;
-            this.listBoxRPLidarDataQuality.Location = new System.Drawing.Point(577, 611);
+            this.listBoxRPLidarDataQuality.Location = new System.Drawing.Point(577, 364);
             this.listBoxRPLidarDataQuality.Name = "listBoxRPLidarDataQuality";
             this.listBoxRPLidarDataQuality.Size = new System.Drawing.Size(500, 121);
             this.listBoxRPLidarDataQuality.TabIndex = 7;
             // 
             // textBoxDataQualityThreshold
             // 
-            this.textBoxDataQualityThreshold.Location = new System.Drawing.Point(758, 588);
+            this.textBoxDataQualityThreshold.Location = new System.Drawing.Point(758, 341);
             this.textBoxDataQualityThreshold.Name = "textBoxDataQualityThreshold";
             this.textBoxDataQualityThreshold.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.textBoxDataQualityThreshold.Size = new System.Drawing.Size(51, 20);
@@ -158,7 +167,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label1.Location = new System.Drawing.Point(578, 588);
+            this.label1.Location = new System.Drawing.Point(578, 341);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(174, 20);
             this.label1.TabIndex = 10;
@@ -412,11 +421,102 @@
             this.textBoxLidarZoneWidthOffset.Text = "0";
             this.textBoxLidarZoneWidthOffset.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // serialPort1
+            // 
+            this.serialPort1.BaudRate = 115200;
+            this.serialPort1.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort1_DataReceived);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.buttonRPLidarStopID);
+            this.groupBox1.Controls.Add(this.labelSeriPortName);
+            this.groupBox1.Controls.Add(this.buttonRPLidarScanID);
+            this.groupBox1.Controls.Add(this.labelSerialPortInfo);
+            this.groupBox1.Controls.Add(this.textBoxSeriPortDataReceive);
+            this.groupBox1.Controls.Add(this.buttonSeriPortCon);
+            this.groupBox1.Controls.Add(this.comboBoxSeriPortList);
+            this.groupBox1.Location = new System.Drawing.Point(577, 508);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(500, 391);
+            this.groupBox1.TabIndex = 37;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Serial Port Settings";
+            // 
+            // labelSeriPortName
+            // 
+            this.labelSeriPortName.AutoSize = true;
+            this.labelSeriPortName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.labelSeriPortName.Location = new System.Drawing.Point(6, 16);
+            this.labelSeriPortName.Name = "labelSeriPortName";
+            this.labelSeriPortName.Size = new System.Drawing.Size(115, 16);
+            this.labelSeriPortName.TabIndex = 12;
+            this.labelSeriPortName.Text = "Serial Port Name :";
+            // 
+            // labelSerialPortInfo
+            // 
+            this.labelSerialPortInfo.AutoSize = true;
+            this.labelSerialPortInfo.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.labelSerialPortInfo.Location = new System.Drawing.Point(14, 48);
+            this.labelSerialPortInfo.Name = "labelSerialPortInfo";
+            this.labelSerialPortInfo.Size = new System.Drawing.Size(107, 20);
+            this.labelSerialPortInfo.TabIndex = 11;
+            this.labelSerialPortInfo.Text = "Serial Port Info:";
+            // 
+            // buttonSeriPortCon
+            // 
+            this.buttonSeriPortCon.Location = new System.Drawing.Point(260, 13);
+            this.buttonSeriPortCon.Name = "buttonSeriPortCon";
+            this.buttonSeriPortCon.Size = new System.Drawing.Size(109, 23);
+            this.buttonSeriPortCon.TabIndex = 10;
+            this.buttonSeriPortCon.Text = "Serial Port Connect";
+            this.buttonSeriPortCon.UseVisualStyleBackColor = true;
+            this.buttonSeriPortCon.MouseClick += new System.Windows.Forms.MouseEventHandler(this.buttonSeriPortCon_MouseClick);
+            // 
+            // comboBoxSeriPortList
+            // 
+            this.comboBoxSeriPortList.FormattingEnabled = true;
+            this.comboBoxSeriPortList.Location = new System.Drawing.Point(136, 14);
+            this.comboBoxSeriPortList.Name = "comboBoxSeriPortList";
+            this.comboBoxSeriPortList.Size = new System.Drawing.Size(109, 21);
+            this.comboBoxSeriPortList.TabIndex = 9;
+            // 
+            // textBoxSeriPortDataReceive
+            // 
+            this.textBoxSeriPortDataReceive.Location = new System.Drawing.Point(10, 89);
+            this.textBoxSeriPortDataReceive.Multiline = true;
+            this.textBoxSeriPortDataReceive.Name = "textBoxSeriPortDataReceive";
+            this.textBoxSeriPortDataReceive.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.textBoxSeriPortDataReceive.Size = new System.Drawing.Size(480, 220);
+            this.textBoxSeriPortDataReceive.TabIndex = 38;
+            // 
+            // buttonRPLidarStopID
+            // 
+            this.buttonRPLidarStopID.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.buttonRPLidarStopID.Location = new System.Drawing.Point(140, 325);
+            this.buttonRPLidarStopID.Name = "buttonRPLidarStopID";
+            this.buttonRPLidarStopID.Size = new System.Drawing.Size(128, 60);
+            this.buttonRPLidarStopID.TabIndex = 40;
+            this.buttonRPLidarStopID.Text = "Stop";
+            this.buttonRPLidarStopID.UseVisualStyleBackColor = true;
+            this.buttonRPLidarStopID.Click += new System.EventHandler(this.buttonRPLidarStopID_Click);
+            // 
+            // buttonRPLidarScanID
+            // 
+            this.buttonRPLidarScanID.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.buttonRPLidarScanID.Location = new System.Drawing.Point(6, 325);
+            this.buttonRPLidarScanID.Name = "buttonRPLidarScanID";
+            this.buttonRPLidarScanID.Size = new System.Drawing.Size(128, 60);
+            this.buttonRPLidarScanID.TabIndex = 39;
+            this.buttonRPLidarScanID.Text = "Scan";
+            this.buttonRPLidarScanID.UseVisualStyleBackColor = true;
+            this.buttonRPLidarScanID.Click += new System.EventHandler(this.buttonRPLidarScanID_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1089, 911);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.textBoxLidarZoneWidth);
@@ -454,7 +554,10 @@
             this.Controls.Add(this.buttonOpenFile);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxRPLidarDataViewer)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -497,6 +600,15 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.TextBox textBoxLidarZoneWidthOffset;
+        private System.IO.Ports.SerialPort serialPort1;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label labelSeriPortName;
+        private System.Windows.Forms.Label labelSerialPortInfo;
+        private System.Windows.Forms.Button buttonSeriPortCon;
+        private System.Windows.Forms.ComboBox comboBoxSeriPortList;
+        private System.Windows.Forms.Button buttonRPLidarStopID;
+        private System.Windows.Forms.Button buttonRPLidarScanID;
+        private System.Windows.Forms.TextBox textBoxSeriPortDataReceive;
     }
 }
 
