@@ -494,12 +494,12 @@ namespace RPLidarDataViewerProject
             //Quality
             tempRPLidarData.quality = (byte)(bytes[0] >> 2);
             //Angle
-            tempRPLidarData.angle = (UInt16)(bytes[1] << 8);
-            tempRPLidarData.angle += (UInt16)bytes[2];
+            tempRPLidarData.angle = (UInt16)(bytes[2] << 8);
+            tempRPLidarData.angle += (UInt16)bytes[1];
             tempRPLidarData.angle = (UInt16)(tempRPLidarData.angle >> 1);
             //Distance
-            tempRPLidarData.distance = (UInt16)(bytes[3] << 8);
-            tempRPLidarData.distance += (UInt16)bytes[4];
+            tempRPLidarData.distance = (UInt16)(bytes[4] << 8);
+            tempRPLidarData.distance += (UInt16)bytes[3];
 
             return tempRPLidarData;
         }
