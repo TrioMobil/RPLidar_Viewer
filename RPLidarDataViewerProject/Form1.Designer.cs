@@ -67,13 +67,13 @@
             this.textBoxLidarZoneWidthOffset = new System.Windows.Forms.TextBox();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.buttonRPLidarStopID = new System.Windows.Forms.Button();
             this.labelSeriPortName = new System.Windows.Forms.Label();
+            this.buttonRPLidarScanID = new System.Windows.Forms.Button();
             this.labelSerialPortInfo = new System.Windows.Forms.Label();
+            this.textBoxSeriPortDataReceive = new System.Windows.Forms.TextBox();
             this.buttonSeriPortCon = new System.Windows.Forms.Button();
             this.comboBoxSeriPortList = new System.Windows.Forms.ComboBox();
-            this.textBoxSeriPortDataReceive = new System.Windows.Forms.TextBox();
-            this.buttonRPLidarStopID = new System.Windows.Forms.Button();
-            this.buttonRPLidarScanID = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxRPLidarDataViewer)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -175,11 +175,13 @@
             // 
             // pictureBoxRPLidarDataViewer
             // 
+            this.pictureBoxRPLidarDataViewer.BackColor = System.Drawing.Color.Black;
             this.pictureBoxRPLidarDataViewer.Location = new System.Drawing.Point(12, 399);
             this.pictureBoxRPLidarDataViewer.Name = "pictureBoxRPLidarDataViewer";
             this.pictureBoxRPLidarDataViewer.Size = new System.Drawing.Size(500, 500);
             this.pictureBoxRPLidarDataViewer.TabIndex = 11;
             this.pictureBoxRPLidarDataViewer.TabStop = false;
+            this.pictureBoxRPLidarDataViewer.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBoxRPLidarDataViewer_Paint);
             // 
             // labelLidarDataViewer
             // 
@@ -424,6 +426,8 @@
             // serialPort1
             // 
             this.serialPort1.BaudRate = 115200;
+            this.serialPort1.ReadBufferSize = 20480;
+            this.serialPort1.ErrorReceived += new System.IO.Ports.SerialErrorReceivedEventHandler(this.serialPort1_ErrorReceived);
             this.serialPort1.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort1_DataReceived);
             // 
             // groupBox1
@@ -442,6 +446,17 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Serial Port Settings";
             // 
+            // buttonRPLidarStopID
+            // 
+            this.buttonRPLidarStopID.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.buttonRPLidarStopID.Location = new System.Drawing.Point(140, 325);
+            this.buttonRPLidarStopID.Name = "buttonRPLidarStopID";
+            this.buttonRPLidarStopID.Size = new System.Drawing.Size(128, 60);
+            this.buttonRPLidarStopID.TabIndex = 40;
+            this.buttonRPLidarStopID.Text = "Stop";
+            this.buttonRPLidarStopID.UseVisualStyleBackColor = true;
+            this.buttonRPLidarStopID.Click += new System.EventHandler(this.buttonRPLidarStopID_Click);
+            // 
             // labelSeriPortName
             // 
             this.labelSeriPortName.AutoSize = true;
@@ -452,15 +467,35 @@
             this.labelSeriPortName.TabIndex = 12;
             this.labelSeriPortName.Text = "Serial Port Name :";
             // 
+            // buttonRPLidarScanID
+            // 
+            this.buttonRPLidarScanID.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.buttonRPLidarScanID.Location = new System.Drawing.Point(6, 325);
+            this.buttonRPLidarScanID.Name = "buttonRPLidarScanID";
+            this.buttonRPLidarScanID.Size = new System.Drawing.Size(128, 60);
+            this.buttonRPLidarScanID.TabIndex = 39;
+            this.buttonRPLidarScanID.Text = "Scan";
+            this.buttonRPLidarScanID.UseVisualStyleBackColor = true;
+            this.buttonRPLidarScanID.Click += new System.EventHandler(this.buttonRPLidarScanID_Click);
+            // 
             // labelSerialPortInfo
             // 
             this.labelSerialPortInfo.AutoSize = true;
-            this.labelSerialPortInfo.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.labelSerialPortInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.labelSerialPortInfo.Location = new System.Drawing.Point(14, 48);
             this.labelSerialPortInfo.Name = "labelSerialPortInfo";
-            this.labelSerialPortInfo.Size = new System.Drawing.Size(107, 20);
+            this.labelSerialPortInfo.Size = new System.Drawing.Size(135, 20);
             this.labelSerialPortInfo.TabIndex = 11;
             this.labelSerialPortInfo.Text = "Serial Port Info:";
+            // 
+            // textBoxSeriPortDataReceive
+            // 
+            this.textBoxSeriPortDataReceive.Location = new System.Drawing.Point(10, 89);
+            this.textBoxSeriPortDataReceive.Multiline = true;
+            this.textBoxSeriPortDataReceive.Name = "textBoxSeriPortDataReceive";
+            this.textBoxSeriPortDataReceive.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.textBoxSeriPortDataReceive.Size = new System.Drawing.Size(480, 220);
+            this.textBoxSeriPortDataReceive.TabIndex = 38;
             // 
             // buttonSeriPortCon
             // 
@@ -479,37 +514,6 @@
             this.comboBoxSeriPortList.Name = "comboBoxSeriPortList";
             this.comboBoxSeriPortList.Size = new System.Drawing.Size(109, 21);
             this.comboBoxSeriPortList.TabIndex = 9;
-            // 
-            // textBoxSeriPortDataReceive
-            // 
-            this.textBoxSeriPortDataReceive.Location = new System.Drawing.Point(10, 89);
-            this.textBoxSeriPortDataReceive.Multiline = true;
-            this.textBoxSeriPortDataReceive.Name = "textBoxSeriPortDataReceive";
-            this.textBoxSeriPortDataReceive.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxSeriPortDataReceive.Size = new System.Drawing.Size(480, 220);
-            this.textBoxSeriPortDataReceive.TabIndex = 38;
-            // 
-            // buttonRPLidarStopID
-            // 
-            this.buttonRPLidarStopID.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.buttonRPLidarStopID.Location = new System.Drawing.Point(140, 325);
-            this.buttonRPLidarStopID.Name = "buttonRPLidarStopID";
-            this.buttonRPLidarStopID.Size = new System.Drawing.Size(128, 60);
-            this.buttonRPLidarStopID.TabIndex = 40;
-            this.buttonRPLidarStopID.Text = "Stop";
-            this.buttonRPLidarStopID.UseVisualStyleBackColor = true;
-            this.buttonRPLidarStopID.Click += new System.EventHandler(this.buttonRPLidarStopID_Click);
-            // 
-            // buttonRPLidarScanID
-            // 
-            this.buttonRPLidarScanID.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.buttonRPLidarScanID.Location = new System.Drawing.Point(6, 325);
-            this.buttonRPLidarScanID.Name = "buttonRPLidarScanID";
-            this.buttonRPLidarScanID.Size = new System.Drawing.Size(128, 60);
-            this.buttonRPLidarScanID.TabIndex = 39;
-            this.buttonRPLidarScanID.Text = "Scan";
-            this.buttonRPLidarScanID.UseVisualStyleBackColor = true;
-            this.buttonRPLidarScanID.Click += new System.EventHandler(this.buttonRPLidarScanID_Click);
             // 
             // Form1
             // 
