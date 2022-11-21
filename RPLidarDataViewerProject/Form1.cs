@@ -43,7 +43,6 @@ namespace RPLidarDataViewerProject
         Byte[] spLidarScanRawDataBuf = new Byte[5];
         Byte[] rpLidarScanIDResponse = new Byte[] { 0xA5, 0x5A, 0x05, 0x00, 0x00, 0x40, 0x81 };
         Byte[] rpLidarScanIDResponseData = new Byte[7];
-        bool lidarViewerFlag = false;
 
         Stopwatch watch = new Stopwatch();//NOTE: Test için eklendi.
 
@@ -210,12 +209,16 @@ namespace RPLidarDataViewerProject
 
                     rPLidarData[serialPortRPLidarDataIndex] = createRPlidarDataFromRawData(spLidarScanRawDataBuf);
                     //textBoxSeriPortDataReceive.Invoke(new showTextSerialPortData(writeToTextBox), rPLidarData[serialPortRPLidarDataIndex]);
-                    serialPortRPLidarDataIndex++;
+
+                    if (rPLidarData[serialPortRPLidarDataIndex].StartFlagBit == true)
+                    {
+                        pictureBoxRPLidarDataViewer.Invalidate();
+                    }
+                    else
+                    {
+                        serialPortRPLidarDataIndex++;
+                    }
                 }
-            }
-            else if (lidarViewerFlag == false)
-            {
-                pictureBoxRPLidarDataViewer.Invalidate();
             }
         }
 
@@ -303,8 +306,6 @@ namespace RPLidarDataViewerProject
 
             Graphics pictureBoxGraphics = e.Graphics;
 
-            lidarViewerFlag = true;//Invalidate fonksiyonunun çağırılması için kullanılan flag.
-
             //NOTE:'e.Graphics.DrawImage'ile çizdirilecek hale çerildi.
             if (rPLidarData != null)
             {
@@ -312,8 +313,6 @@ namespace RPLidarDataViewerProject
             }
 
             serialPortRPLidarDataIndex = 0;
-
-            lidarViewerFlag = false;
 
             //NOTE: Süre ölçümü için eklendi.
             //watch.Restart();
