@@ -25,7 +25,10 @@ namespace RPLidarDataViewerProject
     {
         public struct RPLidarData
         {
+            public bool StartFlagBit;
+            public bool InversedStartFlagBit;
             public uint Quality;
+            public bool CheckBit;   //Constantly set to 1.
             public float Angle;
             public float Distance;
         }
@@ -385,23 +388,34 @@ namespace RPLidarDataViewerProject
         {
             RPLidarData tempRPLidarData = new RPLidarData();
 
-            byte rawQuality = 0;
-            ushort rawAngle = 0;
-            ushort rawDistance = 0;
+            bool tempStartFlagBit = false;
+            bool tempInvertedStartFlagBit = false;
+            byte tempQuality = 0;
+            bool tempCheckBit = false;
+            double tempAngle = 0;
+            double tempDistance = 0;
 
-            //Raw Quality calculate
-            rawQuality = (byte)(bytesOfRawLidarDataFrame[0] >> 2);
-            //Raw Angle calculate
-            rawAngle = (ushort)((((ushort)(bytesOfRawLidarDataFrame[2] << 8)) + ((ushort)bytesOfRawLidarDataFrame[1])) >> 1);
-            //Raw Distance calculate
-            rawDistance = (ushort)(((ushort)(bytesOfRawLidarDataFrame[4] << 8)) + ((ushort)bytesOfRawLidarDataFrame[3]));
+            //Temp Star Flag Bit, Inverted Start Flag Bit and Quality Value convert.
+            tempStartFlagBit = Convert.ToBoolean(((byte)bytesOfRawLidarDataFrame[0]) & ((byte)0x01));
+            tempInvertedStartFlagBit = Convert.ToBoolean(((byte)bytesOfRawLidarDataFrame[0] >> 1) & ((byte)0x01));
+            tempQuality = (byte)(bytesOfRawLidarDataFrame[0] >> 2);
 
-            //Quality
-            tempRPLidarData.Quality = (uint)rawQuality;
-            //Angle
-            tempRPLidarData.Angle = (float)(((double)rawAngle) / 64.0);
-            //Distance
-            tempRPLidarData.Distance = (float)(((double)rawDistance) / 4.0);
+            //Temp Check Bit and Angle Value convert.
+            tempCheckBit = Convert.ToBoolean(((byte)bytesOfRawLidarDataFrame[1]) & ((byte)0x01));
+            tempAngle = (((ushort)(bytesOfRawLidarDataFrame[2] << 8)) + ((ushort)bytesOfRawLidarDataFrame[1])) >> 1;
+            tempAngle = tempAngle / 64.0f;
+
+            //Temp Distance convert.
+            tempDistance = ((ushort)(bytesOfRawLidarDataFrame[4] << 8)) + ((ushort)bytesOfRawLidarDataFrame[3]);
+            tempDistance = tempDistance / 4.0f;
+
+            //Temp RPLidar Data type assignment.
+            tempRPLidarData.StartFlagBit = tempStartFlagBit;
+            tempRPLidarData.InversedStartFlagBit = tempInvertedStartFlagBit;
+            tempRPLidarData.Quality = (uint)tempQuality;
+            tempRPLidarData.CheckBit = tempCheckBit;
+            tempRPLidarData.Angle = (float)tempAngle;
+            tempRPLidarData.Distance = (float)tempDistance;
 
             return tempRPLidarData;
         }
@@ -644,7 +658,8 @@ namespace RPLidarDataViewerProject
         }
     }
 }
-/*NOTE: 14/11/2022 yapılacak notu!
+/*NOTE: 21/11/2022 yapılacak notu!
+ * Fonksiyonlar için kullanılan parametre tiplerini tekrar düzenle.
  * RPLidar aray tipini Arraylist veya list yapısına çevir, bilinmeyen boyut için rahat işlem yapabilesin.
  * 'createLidarViewerPanel();' fonksiyonu'drawLidarScreen();' içerisinde iken sadece lidar adtası çizilmiyor incele.
  * Kapatılan list box yazdırmalarını ayrı ayrı buton altına alabilirsin.(önemsiz.)
