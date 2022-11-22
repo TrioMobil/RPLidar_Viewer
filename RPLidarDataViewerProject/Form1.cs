@@ -524,7 +524,7 @@ namespace RPLidarDataViewerProject
             p.DashPattern = new float[3] { 1, 5, 5 };
             //p.DashStyle = System.Drawing.Drawing2D.DashStyle.DashDot;
 
-            uint ellipseCount = 8;
+            uint ellipseCount = 6;
             uint ellipseMaxSize = (uint)((pictureBoxSizeWidth < pictureBoxSizeHeight) ? pictureBoxSizeWidth : pictureBoxSizeHeight);
 
             for (uint i = 1; i < ellipseCount + 1; i++)
@@ -694,8 +694,15 @@ namespace RPLidarDataViewerProject
     }
 }
 /*NOTE: 21/11/2022 yapılacak notu!
- * Fonksiyonlar için kullanılan parametre tiplerini tekrar düzenle.
- * RPLidar aray tipini Arraylist veya list yapısına çevir, bilinmeyen boyut için rahat işlem yapabilesin.
- * 'createLidarViewerPanel();' fonksiyonu'drawLidarScreen();' içerisinde iken sadece lidar adtası çizilmiyor incele.
- * Kapatılan list box yazdırmalarını ayrı ayrı buton altına alabilirsin.(önemsiz.)
+ * - Fonksiyonlar için kullanılan parametre tiplerini tekrar düzenle.
+ * - RPLidar aray tipini Arraylist veya list yapısına çevir, bilinmeyen boyut için rahat işlem yapabilesin.
+ * - 'createLidarViewerPanel();' fonksiyonu'drawLidarScreen();' içerisinde iken sadece lidar adtası çizilmiyor incele.
+ * - Kapatılan list box yazdırmalarını ayrı ayrı buton altına alabilirsin.(önemsiz.)
+ * 
+ * - Görselleştirme alanı için zom in/zom out yapılabilmesi için çizme fonksiyonunen scale edilmesi için
+ * geçilen max lidar mesafe değeri değiştirilerek yapılabilir. Beraberinde çizdirilen çizdirilen elipsler bu değerle ölçekli 1metre
+ * gösterecek şekilde ölçeklendirilebilir.
+ * 
+ * - Görselleştirmede kullanılan line çizme işlemini point olarak değiştir.
+ * - Uygulama ilk açıldığında bir nokta görselleştiriliyor nedenini bul çöz.
  */
