@@ -454,6 +454,24 @@ namespace RPLidarDataViewerProject
 
             return (x, y);
         }
+        public (int x, int y) convertPolarToRectangular(float angle, float distance)
+        {
+            int x, y;
+            double radian = Math.PI * angle / 180.0;
+
+            if (angle >= 0 && angle <= 180)
+            {
+                x = (int)(distance * Math.Sin(radian));
+                y = (-1) * (int)(distance * Math.Cos(radian));
+            }
+            else
+            {
+                x = (-1) * (int)(distance * -Math.Sin(radian));
+                y = (-1) * (int)(distance * Math.Cos(radian));
+            }
+
+            return (x, y);
+        }
 
         //uzunluk ölceklendirme fonksiyonu.
         public float scale(float value, float minValue, float maxValue, float scaledMin, float scaledMax)
@@ -500,18 +518,36 @@ namespace RPLidarDataViewerProject
 
             Pen p = new Pen(Brushes.DarkGreen, 1);
 
-            //draw circle
-            graphicsObject.DrawEllipse(p, 0 + 1, 0 + 1, pictureBoxSizeWidth - 3, pictureBoxSizeWidth - 3);  //bigger circle
-            graphicsObject.DrawEllipse(p, 80, 80, pictureBoxSizeWidth - 160, pictureBoxSizeHeight - 160);    //smaller circle
+            graphicsObject.TranslateTransform(centerX, centerY);
 
-            //draw perpendicular line
-            graphicsObject.DrawLine(p, new Point(centerX, 0), new Point(centerX, pictureBoxSizeHeight)); // UP-DOWN
-            graphicsObject.DrawLine(p, new Point(0, centerY), new Point(pictureBoxSizeWidth, centerY)); //LEFT-RIGHT
-            int crossLO = 74;//Capraz cizilen cizgiler bitmap e göre dinamik değildir.Gerektigidurumda dinamik yapılacaktır.
-            graphicsObject.DrawLine(p, new Point(centerX, centerY), new Point(pictureBoxSizeWidth - crossLO, 0 + crossLO)); //Right Up Cross Line
-            graphicsObject.DrawLine(p, new Point(centerX, centerY), new Point(pictureBoxSizeWidth - crossLO, pictureBoxSizeHeight - crossLO)); //Right Down Cross Line
-            graphicsObject.DrawLine(p, new Point(centerX, centerY), new Point(0 + crossLO, pictureBoxSizeHeight - crossLO)); //Left Down Cross Line
-            graphicsObject.DrawLine(p, new Point(centerX, centerY), new Point(0 + crossLO, 0 + crossLO)); //Left UP Cross Line
+            //Draw Ellipse
+            p.DashPattern = new float[3] { 1, 5, 5 };
+            //p.DashStyle = System.Drawing.Drawing2D.DashStyle.DashDot;
+
+            uint ellipseCount = 8;
+            uint ellipseMaxSize = (uint)((pictureBoxSizeWidth < pictureBoxSizeHeight) ? pictureBoxSizeWidth : pictureBoxSizeHeight);
+
+            for (uint i = 1; i < ellipseCount + 1; i++)
+            {
+                uint ellipseSize = (ellipseMaxSize / ellipseCount) * i;
+                int ellipseCenter = (int)(ellipseSize / 2) * (-1);
+
+                graphicsObject.DrawEllipse(p, ellipseCenter, ellipseCenter, ellipseSize, ellipseSize);
+            }
+
+            //Draw Perpendicular Line
+            //p.DashPattern = new float[3] { 1, 3, 3 };
+            p.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
+
+            int rotationAngle = 30;
+            Font drawStringFont = new Font(new FontFamily("Arial"), 10);
+
+            for (int i = 0; i < (360 / rotationAngle); i += 1)
+            {
+                graphicsObject.DrawLine(p, new Point(0, 0), new Point(0, -centerY));
+                graphicsObject.DrawString($"{rotationAngle * i}", drawStringFont, Brushes.Green, new Point(0, -centerY));
+                graphicsObject.RotateTransform(rotationAngle);
+            }
 
             return (graphicsObject);
         }
@@ -548,7 +584,7 @@ namespace RPLidarDataViewerProject
 
             float scaledLidarDistance_mm = scale(distaceInAngleDataOflidar_mm, minLidarDistance_mm, maxLidarDistance_mm, 0, centerX);
 
-            var coordinate = convertPolarToRectangular(angleDataOfLidar, scaledLidarDistance_mm, centerX, centerY);
+            var coordinate = convertPolarToRectangular(angleDataOfLidar, scaledLidarDistance_mm);
             lidarDataSample_X = coordinate.x;
             lidarDataSample_Y = coordinate.y;
 
@@ -622,7 +658,7 @@ namespace RPLidarDataViewerProject
         {
             bool detectionZone = false;
 
-            var lidarSampleCoordinate = convertPolarToRectangular(lidarAngle, lidarDistance, 0, 0);
+            var lidarSampleCoordinate = convertPolarToRectangular(lidarAngle, lidarDistance);
 
             if ((lidarSampleCoordinate.x >= lidarZoneMinX && lidarSampleCoordinate.x <= lidarZoneMaxX) && (lidarSampleCoordinate.y >= lidarZoneMinY && lidarSampleCoordinate.y <= lidarZoneMaxY))
             {
