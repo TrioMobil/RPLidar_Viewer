@@ -46,6 +46,10 @@ namespace RPLidarDataViewerProject
 
         Stopwatch watch = new Stopwatch();//NOTE: Test için eklendi.
 
+        //Test_Start_For_Zone
+        LidarZone zone;
+        //Test_End_For_Zone
+
         public Form1()
         {
             InitializeComponent();
@@ -105,10 +109,10 @@ namespace RPLidarDataViewerProject
             float MidDistanceThreshod = (float)Convert.ToUInt32(textBoxLidarMidDistance.Text);
 
             //Lidar Zone 'Width' , 'Height' ve offset  degerleri.
-            float lidarZoneHeight = (float)Convert.ToUInt32(textBoxLidarZoneHeight.Text);
-            float lidarZoneHeightOffset = (float)Convert.ToInt32(textBoxLidarZoneHeightOffset.Text);
-            float lidarZoneWidth = (float)Convert.ToUInt32(textBoxLidarZoneWidth.Text);
-            float lidarZoneWidthOffset = (float)Convert.ToInt32(textBoxLidarZoneWidthOffset.Text);
+            float lidarZoneHeight = (float)Convert.ToUInt32(numericUpDownLidarZoneHeight.Value);
+            float lidarZoneHeightOffset = (float)Convert.ToInt32(numericUpDownLidarZoneHeightOffset.Value);
+            float lidarZoneWidth = (float)Convert.ToUInt32(numericUpDownLidarZoneWidth.Value);
+            float lidarZoneWidthOffset = (float)Convert.ToInt32(numericUpDownLidarZoneWidthOffset.Value);
 
             float zoneCenterX = lidarZoneWidth / 2;
             float zoneCenterY = lidarZoneHeight / 2;
@@ -222,6 +226,11 @@ namespace RPLidarDataViewerProject
             }
         }
 
+        private void serialPort1_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
+        {
+            MessageBox.Show($"Serial Port Error.\n{e.EventType}", "Error", MessageBoxButtons.OK);
+        }
+
         private void buttonSeriPortCon_MouseClick(object sender, MouseEventArgs e)
         {
             if (serialPort1.IsOpen)
@@ -285,7 +294,7 @@ namespace RPLidarDataViewerProject
         private void buttonRPLidarScanID_Click(object sender, EventArgs e)
         {
             Array.Clear(rpLidarScanIDResponseData, 0, rpLidarScanIDResponseData.Length);
-            serialPort1.DiscardInBuffer();
+            if (serialPort1.IsOpen) serialPort1.DiscardInBuffer();
 
             if (serialPort1.IsOpen) serialPort1.Write(new byte[] { 0xA5, 0x20 }, 0, 2);
         }
@@ -295,7 +304,7 @@ namespace RPLidarDataViewerProject
             if (serialPort1.IsOpen) serialPort1.Write(new byte[] { 0xA5, 0x25 }, 0, 2);
 
             Array.Clear(rpLidarScanIDResponseData, 0, rpLidarScanIDResponseData.Length);
-            serialPort1.DiscardInBuffer();
+            if (serialPort1.IsOpen) serialPort1.DiscardInBuffer();
         }
 
         private void pictureBoxRPLidarDataViewer_Paint(object sender, PaintEventArgs e)
@@ -306,13 +315,24 @@ namespace RPLidarDataViewerProject
 
             Graphics pictureBoxGraphics = e.Graphics;
 
+            //Test_Start_For_Zone
+            Size zoneSize = new Size((int)Convert.ToUInt32(numericUpDownLidarZoneWidth.Value), (int)Convert.ToUInt32(numericUpDownLidarZoneHeight.Value));
+            Size zoneSizeOffset = new Size((int)Convert.ToInt32(numericUpDownLidarZoneWidthOffset.Value), (int)Convert.ToInt32(numericUpDownLidarZoneHeightOffset.Value));
+            zone = new LidarZone(LidarZone.ZoneDistanceTypes.Low, zoneSize, zoneSizeOffset);
+            //Test_End_For_Zone
+
             //NOTE:'e.Graphics.DrawImage'ile çizdirilecek hale çerildi.
             if (rPLidarData != null)
             {
-                pictureBoxGraphics = drawLidarData(rPLidarData, rPLidarData.Length, pictureBoxGraphics, pictureBoxRPLidarDataViewer);
+                pictureBoxGraphics = drawLidarData(rPLidarData, rPLidarData.Length, pictureBoxGraphics, pictureBoxRPLidarDataViewer, zone);
             }
 
             serialPortRPLidarDataIndex = 0;
+
+            //Test_Start_For_Zone
+            //pictureBoxGraphics = zone.drawLidarZone(pictureBoxGraphics);
+            pictureBoxGraphics = zone.drawLidarZone(pictureBoxGraphics, calculateScaleRation(0.0f, 12000.0f, 0.0f, (float)pictureBoxRPLidarDataViewer.Width));
+            //Test_End_For_Zone
 
             //NOTE: Süre ölçümü için eklendi.
             //watch.Restart();
@@ -436,7 +456,7 @@ namespace RPLidarDataViewerProject
         }
 
         //Kutupsal gösterimden koordinat dikdörtgensel gösterime çevirme fonksiyon tanımı.
-        public (int x, int y) convertPolarToRectangular(float angle, float distance, int coordinateOriginX, int coordinateOriginY)
+        public (int x, int y) convertPolarToCartesian(float angle, float distance, int coordinateOriginX, int coordinateOriginY)
         {
             int x, y;
             double radian = Math.PI * angle / 180.0;
@@ -454,21 +474,49 @@ namespace RPLidarDataViewerProject
 
             return (x, y);
         }
-        public (int x, int y) convertPolarToRectangular(float angle, float distance)
+        public (int x, int y) convertPolarToCartesian(float angle, float distance)
         {
-            int x, y;
-            double radian = Math.PI * angle / 180.0;
+            //Convert lidar angle to polar angle
+            float degree360 = 360;
+            float degree270 = 270;
+            float degree180 = 180;
+            float degree90 = 90;
+            float newAngle = 0;
 
-            if (angle >= 0 && angle <= 180)
+            if(angle > 0 && angle <= 90)
             {
-                x = (int)(distance * Math.Sin(radian));
-                y = (-1) * (int)(distance * Math.Cos(radian));
+                newAngle = (degree90 - angle);  //1. Bölge
             }
-            else
+            else if(angle > 90 && angle <= 180)
             {
-                x = (-1) * (int)(distance * -Math.Sin(radian));
-                y = (-1) * (int)(distance * Math.Cos(radian));
+                newAngle = (degree180 - angle) + degree270; //4. Bölge
             }
+            else if(angle > 180 && angle <= 270)
+            {
+                newAngle = (degree270 - angle) + degree180; //3. Bölge
+            }
+            else if(angle > 270 && angle <= 360)
+            {
+                newAngle = (degree360 - angle) + degree90; //2. Bölge
+            }
+
+            int x, y;
+            double radian = Math.PI * newAngle / 180.0;
+
+            x = (int)(distance * Math.Cos(radian));
+            y = (int)(distance * Math.Sin(radian));
+
+            //NOTE:27112022 kullanılmayacak.
+            //if (newAngle >= 0 && newAngle <= 180)
+            //{
+            //    x = (int)(distance * Math.Sin(radian));
+            //    y = (-1) * (int)(distance * Math.Cos(radian));
+            //}
+            //else
+            //{
+            //    x = (-1) * (int)(distance * -Math.Sin(radian));
+            //    y = (-1) * (int)(distance * Math.Cos(radian));
+            //}
 
             return (x, y);
         }
@@ -481,6 +529,24 @@ namespace RPLidarDataViewerProject
 
             float scaledValue = (value * scale) - offset;
             return (scaledValue);
+        }
+        public int scale(int value, int minValue, int maxValue, int minScaledValued, int maxScaledValue)
+        {
+            int scaledValue;
+            float scaleRation;
+
+            scaleRation = (float)(maxScaledValue - minScaledValued) / (float)(maxValue - minValue);
+            scaledValue = (int)(scaleRation * value);
+
+            return scaledValue;
+        }
+        public float calculateScaleRation(float minValue, float maxValue, float minScaledValued, float maxScaledValue)
+        {
+            float scaleRation;
+
+            scaleRation = (float)(maxScaledValue - minScaledValued) / (float)(maxValue - minValue);
+
+            return scaleRation;
         }
 
         //Lidar Viewer Background çizdiriliyor.(createLidarViewerPanel -> drawLidarViwerBackground)
@@ -564,7 +630,7 @@ namespace RPLidarDataViewerProject
 
             float scaledLidarDistance_mm = scale(distaceInAngleDataOflidar_mm, minLidarDistance_mm, maxLidarDistance_mm, 0, cx);
 
-            var coordinate = convertPolarToRectangular(angleDataOfLidar, scaledLidarDistance_mm, cx, cy);
+            var coordinate = convertPolarToCartesian(angleDataOfLidar, scaledLidarDistance_mm, cx, cy);
             x = coordinate.x;
             y = coordinate.y;
 
@@ -584,11 +650,44 @@ namespace RPLidarDataViewerProject
 
             float scaledLidarDistance_mm = scale(distaceInAngleDataOflidar_mm, minLidarDistance_mm, maxLidarDistance_mm, 0, centerX);
 
-            var coordinate = convertPolarToRectangular(angleDataOfLidar, scaledLidarDistance_mm);
+            var coordinate = convertPolarToCartesian(angleDataOfLidar, scaledLidarDistance_mm);
             lidarDataSample_X = coordinate.x;
             lidarDataSample_Y = coordinate.y;
 
             graphicsObject.DrawLine(pen, new Point(lidarDataSample_X - 2, lidarDataSample_Y), new Point(lidarDataSample_X + 2, lidarDataSample_Y));
+            return (graphicsObject);
+        }
+        Graphics drawLidarDataSample(Graphics graphicsObject, PictureBox pictureBoxObject, Pen pen, float angleDataOfLidar, float distaceInAngleDataOflidar_mm, uint minLidarDistance_mm, uint maxLidarDistance_mm, LidarZone lidarZone)
+        {
+            int pictureBoxSizeWidth = pictureBoxObject.Size.Width;
+            int pictureBoxSizeHeight = pictureBoxObject.Size.Height;
+
+            int centerX = pictureBoxSizeWidth / 2;
+            int centerY = pictureBoxSizeHeight / 2;
+
+            //Lidar sample in zone check.
+            var coordinate = convertPolarToCartesian(angleDataOfLidar, distaceInAngleDataOflidar_mm);
+            if (lidarZone.checkInTheZone((float)coordinate.x, (float)(coordinate.y)) == true)
+            {
+                pen.Brush = Brushes.Yellow;
+            }
+            else
+            {
+                pen.Brush = Brushes.Purple;
+            }
+
+            //lidar sample scale.
+            int scaledLidarDataSample_X, scaledLidarDataSample_Y;
+            //NOTE:(27.11.2022) scale işleminde x = 0 ve y = 0 değerleri için -11 gibi bir değer üretiyordu hatalı olduğu için kapatıldı.
+            //float scaledLidarDistance_mm = scale(distaceInAngleDataOflidar_mm, minLidarDistance_mm, maxLidarDistance_mm, 0, centerX);
+            float scaledLidarDistance_mm = distaceInAngleDataOflidar_mm * calculateScaleRation(minLidarDistance_mm, maxLidarDistance_mm, 0, centerX);
+            var scaledCoordinate = convertPolarToCartesian(angleDataOfLidar, scaledLidarDistance_mm);
+            scaledLidarDataSample_X = scaledCoordinate.x;
+            scaledLidarDataSample_Y = (-1) * scaledCoordinate.y;//NOTE: Converting to graphic y coordinate.(27.11.2022
+
+            //graphicsObject.DrawLine(pen, new Point(scaledLidarDataSample_X - 2, scaledLidarDataSample_Y), new Point(scaledLidarDataSample_X + 2, scaledLidarDataSample_Y));
+            graphicsObject.FillEllipse(pen.Brush,scaledLidarDataSample_X - 1, scaledLidarDataSample_Y - 1, 3, 3);
+
             return (graphicsObject);
         }
 
@@ -616,6 +715,20 @@ namespace RPLidarDataViewerProject
             for (int i = 0; i < lidarData.Length; i++)
             {
                 graphicsObject = drawLidarDataSample(graphicsObject, pictureBoxObject, new Pen(Brushes.Purple, 3), lidarData[i].Angle, lidarData[i].Distance, 150, 6000);
+            }
+
+            return (graphicsObject);
+        }
+        public Graphics drawLidarData(RPLidarData[] lidarData, int dataCount, Graphics graphicsObject, PictureBox pictureBoxObject, LidarZone lidarzone)
+        {
+            //Lidar viewer backgroung create
+            graphicsObject = drawLidarViwerBackground(graphicsObject, pictureBoxObject);
+
+            //Lidar data draw
+            Pen lidarSampleDrawPen = new Pen(Brushes.Purple, 3);
+            for (int i = 0; i < lidarData.Length; i++)
+            {
+                graphicsObject = drawLidarDataSample(graphicsObject, pictureBoxObject, lidarSampleDrawPen, lidarData[i].Angle, lidarData[i].Distance, 150, 6000, lidarzone);
             }
 
             return (graphicsObject);
@@ -652,13 +765,12 @@ namespace RPLidarDataViewerProject
             zoneViewerGraphic.FillEllipse(Brushes.Blue, ((bmpCenterX - ZoneCenterX) + zoneWidth / 2) - 3, ((bmpCenterY - ZoneCenterY) + zoneHeight / 2) - 3, 6, 6);
             return (lidarPanelBitmap);
         }
-
         //Lidar verisi zone alanındamı kontrolü.
         public bool checkTheLidarDetectionZone(float lidarAngle, float lidarDistance, float lidarZoneMinX, float lidarZoneMaxX, float lidarZoneMinY, float lidarZoneMaxY)
         {
             bool detectionZone = false;
 
-            var lidarSampleCoordinate = convertPolarToRectangular(lidarAngle, lidarDistance);
+            var lidarSampleCoordinate = convertPolarToCartesian(lidarAngle, lidarDistance);
 
             if ((lidarSampleCoordinate.x >= lidarZoneMinX && lidarSampleCoordinate.x <= lidarZoneMaxX) && (lidarSampleCoordinate.y >= lidarZoneMinY && lidarSampleCoordinate.y <= lidarZoneMaxY))
             {
@@ -687,9 +799,199 @@ namespace RPLidarDataViewerProject
             textBoxSeriPortDataReceive.Text += "\r\n";
         }
 
-        private void serialPort1_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
+
+        //Zone Class Definition
+        public class LidarZone
         {
-            MessageBox.Show($"Serial Port Error.\n{e.EventType}", "Error", MessageBoxButtons.OK);
+            public enum ZoneDistanceTypes
+            {
+                Low,
+                Mid,
+            }
+
+            private ZoneDistanceTypes distanceType;
+            private Size size;
+            private Size offsetSize;
+            private Point positionOfStarting;
+            private Point positionOfStartingForGraphic;
+            private Point positionOfCornerMin;
+            private Point positionOfCornerMax;
+            private bool detectOfSample;
+            private uint detectedSampleCount;
+
+            public ZoneDistanceTypes DistanceType
+            {
+                get{return this.distanceType;}
+                set{this.distanceType = value;}
+            }
+            public Size Size
+            {
+                get{return this.size;}
+                set
+                {
+                    if((value.Width >= 0) && (value.Height >= 0))
+                    {
+                        this.size.Width = value.Width;
+                        this.size.Height = value.Height;
+                    }
+                    else
+                    {
+                        this.size.Width = 0;
+                        this.size.Height = 0;
+                    }
+                }
+            }
+            public Size OffsetSize
+            {
+                get{return this.offsetSize;}
+                set
+                {
+                    this.offsetSize.Width = value.Width;
+                    this.offsetSize.Height = value.Height;
+                }
+            }
+            public Point PositionOfStarting
+            {
+                get{return this.positionOfStarting;}
+            }
+            public Point PositionOfStartingForGraphic
+            {
+                get{return this.positionOfStartingForGraphic; }
+            }
+            public Point PositionOfCornerMin
+            {
+                get{return this.positionOfCornerMin;}
+            }
+            public Point PositionOfCornerMax
+            {
+                get{return this.positionOfCornerMax;}
+            }
+            public bool DetectOfSample
+            {
+                get { return this.detectOfSample; }
+                set { this.detectOfSample = value; }
+            }
+            public uint DetectedSampleCount
+            {
+                get { return this.detectedSampleCount; }
+                set { this.detectedSampleCount = value; }
+            }
+
+
+            public LidarZone()
+            {
+                this.DistanceType = ZoneDistanceTypes.Mid;
+                this.Size = new Size(0, 0);
+                this.OffsetSize = new Size(0, 0);
+                this.positionOfStarting = calculateZoneStartPosition(this.Size, this.OffsetSize);
+                this.positionOfStartingForGraphic = calculateZoneStartPositionForGraphic(this.Size, this.OffsetSize);
+                var corner = calculateTheMaxAndMinCornerCoordinatesOfTheZone(this.Size, this.positionOfStarting);//NOTE: Bu fonksiyon değer döndüren hale getirilecek döndürdüğü yapı tüm pozisyonları içeren bir yapı şekilnde olabilir.Bakılacak!! Şuan corner max min şeklinde iki ayrı Point nesnesi.
+                this.positionOfCornerMin = corner.Min;
+                this.positionOfCornerMax = corner.Max;
+                this.DetectOfSample = false;
+                this.DetectedSampleCount = 0;
+            }
+            public LidarZone(ZoneDistanceTypes zoneDistanceType, Size zoneSize, Size zoneOffsetSize)
+            {
+                this.DistanceType = zoneDistanceType;
+                this.Size = new Size(zoneSize.Width, zoneSize.Height);
+                this.OffsetSize = new Size(zoneOffsetSize.Width, zoneOffsetSize.Height);
+                this.positionOfStarting = calculateZoneStartPosition(this.Size, this.OffsetSize);
+                this.positionOfStartingForGraphic = calculateZoneStartPositionForGraphic(this.Size, this.OffsetSize);
+                var corner = calculateTheMaxAndMinCornerCoordinatesOfTheZone(this.Size, this.positionOfStarting);//NOTE: Bu fonksiyon değer döndüren hale getirilecek döndürdüğü yapı tüm pozisyonları içeren bir yapı şekilnde olabilir.Bakılacak!! Şuan corner max min şeklinde iki ayrı Point nesnesi.
+                this.positionOfCornerMin = corner.Min;
+                this.positionOfCornerMax = corner.Max;
+                this.DetectOfSample = false;
+                this.DetectedSampleCount = 0;
+            }
+
+            Point calculateZoneStartPosition(Size zoneSize, Size zoneOffsetSize)
+            {
+                Point zoneStartPosition = new Point();
+
+                zoneStartPosition.X = (-1) * (zoneSize.Width / 2);
+                zoneStartPosition.Y = (zoneSize.Height / 2);
+
+                zoneStartPosition.X = zoneStartPosition.X + zoneOffsetSize.Width;
+                zoneStartPosition.Y = zoneStartPosition.Y + zoneOffsetSize.Height;
+
+                return zoneStartPosition;
+            }
+            Point calculateZoneStartPositionForGraphic(Size zoneSize, Size zoneOffsetSize)
+            {
+                Point zoneStartPositionForGraphic = new Point();
+
+                int rectangleCenterX = (zoneSize.Width / 2);
+                int rectangleCenterY = (zoneSize.Height / 2);
+
+                int lidarOriginOffsetOfRectangleCenterX = ((-1) * rectangleCenterX);
+                int lidarOriginOffsetOfRectangleCenterY = ((-1) * rectangleCenterY);
+
+                zoneStartPositionForGraphic.X = lidarOriginOffsetOfRectangleCenterX + zoneOffsetSize.Width;
+                zoneStartPositionForGraphic.Y = lidarOriginOffsetOfRectangleCenterY + (zoneOffsetSize.Height * (-1));  //'Y (Height)' axis was reversed for drawing are with '* (-1)'.
+
+                return zoneStartPositionForGraphic;
+            }
+            (Point Min, Point Max) calculateTheMaxAndMinCornerCoordinatesOfTheZone(Size zoneSize, Point zoneStartPosition)
+            {
+                Point cornerMin = new Point();
+                Point cornerMax = new Point();
+
+                cornerMin.X = zoneStartPosition.X;
+                cornerMin.Y = zoneStartPosition.Y - zoneSize.Height;
+                cornerMax.X = zoneStartPosition.X + zoneSize.Width;
+                cornerMax.Y = zoneStartPosition.Y;
+
+                return (cornerMin, cornerMax);
+            }
+
+            public Graphics drawLidarZone(Graphics graphicsObject)
+            {
+                Pen zoneDrawPen = new Pen(Brushes.White, 2);
+
+                if (this.DistanceType == ZoneDistanceTypes.Low) zoneDrawPen.Brush = Brushes.Red;
+                if (this.DistanceType == ZoneDistanceTypes.Mid) zoneDrawPen.Brush = Brushes.Yellow;
+
+                Rectangle zoneRectangle = new Rectangle(this.PositionOfStartingForGraphic, this.Size);
+                graphicsObject.DrawRectangle(zoneDrawPen, zoneRectangle);
+
+                return graphicsObject;
+            }
+            public Graphics drawLidarZone(Graphics graphicsObject, float scaleRation)
+            {
+                Pen zoneDrawPen = new Pen(Brushes.White, 2);
+
+                if (this.DistanceType == ZoneDistanceTypes.Low) zoneDrawPen.Brush = Brushes.Red;
+                if (this.DistanceType == ZoneDistanceTypes.Mid) zoneDrawPen.Brush = Brushes.Yellow;
+
+                Point scaledStartPosition = new Point();
+                Size scaledSize = new Size();
+
+                scaledStartPosition.X = (int)((float)this.PositionOfStartingForGraphic.X * scaleRation);
+                scaledStartPosition.Y = (int)((float)this.PositionOfStartingForGraphic.Y * scaleRation);
+                scaledSize.Width = (int)((float)this.Size.Width * scaleRation);
+                scaledSize.Height = (int)((float)this.Size.Height * scaleRation);
+
+                Rectangle zoneRectangle = new Rectangle(scaledStartPosition, scaledSize);
+                graphicsObject.DrawRectangle(zoneDrawPen, zoneRectangle);
+
+                return graphicsObject;
+            }
+            public bool checkInTheZone(float coordinateX, float coordinateY)
+            {
+                bool detectedOfSample = false;
+
+                if((coordinateX >= this.positionOfCornerMin.X) && (coordinateY >= this.positionOfCornerMin.Y) && (coordinateX <= this.positionOfCornerMax.X) && (coordinateY <= this.positionOfCornerMax.Y))
+                {
+                    detectedOfSample = true;
+                }
+                else
+                {
+                    detectedOfSample = false;
+                }
+
+                return detectedOfSample;
+            }
         }
     }
 }
@@ -703,6 +1005,15 @@ namespace RPLidarDataViewerProject
  * geçilen max lidar mesafe değeri değiştirilerek yapılabilir. Beraberinde çizdirilen çizdirilen elipsler bu değerle ölçekli 1metre
  * gösterecek şekilde ölçeklendirilebilir.
  * 
- * - Görselleştirmede kullanılan line çizme işlemini point olarak değiştir.
- * - Uygulama ilk açıldığında bir nokta görselleştiriliyor nedenini bul çöz.
+ * - (27.11.2022 Yapıldı!!) Görselleştirmede kullanılan line çizme işlemini point olarak değiştir.
+ * - (27.11.20.22 Düzeltildi!!)Uygulama ilk açıldığında bir nokta görselleştiriliyor nedenini bul çöz.
+ */
+/*NOTE: 27.11.2022 Yapılanlar.
+ * - Lidar zone çizme işlemi ve zone algılama renklendirme işlemi düzeltildi ve çalışır durumda.
+ * - lidar zone start pozisyonu ile graphics için start pozisyon hesaplaması ayrı tutuldu.
+ * - Lidar 'convertPolarToRectangular()' fonksiyonu bilinen şekilde düzeltildi. Ve ismi 'convertPolarToCartesian()' olarak değiştirildi.
+ * - Lidar datalarının scale edildiği fonksiyon (0,0) değerleri için merkezden uzak değer ürettiği için app ilk açıldığında merkezden uzak nokta gözüküyordu.Düzeltildi!
+ * - 'scaledCoordinate.y' değeri graphic koordinatına uyması için (-1) değeri ile çarpıldı.(NOTE: bir fonksiyon yazılarak bu çevirim yapılabilir.)
+ * - Lidar götselleştirme çizgiden daire çizme olarak değiştirildi.
+ * - 'Scan' ve 'Stop' buton click eventları içerisinde yer alan 'serialInBufferDiscard() ' fonksiyonu seriportun açık olduğu koşuluna bağlandı.
  */
