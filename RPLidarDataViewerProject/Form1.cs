@@ -44,7 +44,7 @@ namespace RPLidarDataViewerProject
         List<RPLidarData> rpLidarDatas = new List<RPLidarData>();   //NOTE: Not using now.
 
         //LidarZone Object
-        LidarZone zone;
+        LidarZone[] zones = new LidarZone[2];
 
         public Form1()
         {
@@ -312,20 +312,28 @@ namespace RPLidarDataViewerProject
             //LidarZone data reading and zone creating.
             Size zoneSize = new Size((int)Convert.ToUInt32(numericUpDownLidarZoneWidth.Value), (int)Convert.ToUInt32(numericUpDownLidarZoneHeight.Value));
             Size zoneSizeOffset = new Size((int)Convert.ToInt32(numericUpDownLidarZoneWidthOffset.Value), (int)Convert.ToInt32(numericUpDownLidarZoneHeightOffset.Value));
-            zone = new LidarZone(LidarZone.ZoneDistanceTypes.Low, zoneSize, zoneSizeOffset);
+            zones[0] = new LidarZone(LidarZone.ZoneDistanceTypes.Low, zoneSize, zoneSizeOffset);
+
+            Size zoneSize_2 = new Size((int)Convert.ToUInt32(numericUpDownLidarZoneWidth_2.Value), (int)Convert.ToUInt32(numericUpDownLidarZoneHeight_2.Value));
+            Size zoneSizeOffset_2 = new Size((int)Convert.ToInt32(numericUpDownLidarZoneWidthOffset_2.Value), (int)Convert.ToInt32(numericUpDownLidarZoneHeightOffset_2.Value));
+            zones[1] = new LidarZone(LidarZone.ZoneDistanceTypes.Mid, zoneSize_2, zoneSizeOffset_2);
 
             //lidar sample data drawing
             if (rPLidarData != null)
             {
                 //pictureBoxGraphics = drawLidarData(rPLidarData, rPLidarData.Length, pictureBoxGraphics, pictureBoxRPLidarDataViewer);//Without zone.
-                pictureBoxGraphics = drawLidarData(rPLidarData, rPLidarData.Length, pictureBoxGraphics, pictureBoxRPLidarDataViewer, zone);
+                //pictureBoxGraphics = drawLidarData(rPLidarData, rPLidarData.Length, pictureBoxGraphics, pictureBoxRPLidarDataViewer, zone);
+                pictureBoxGraphics = drawLidarData(rPLidarData, rPLidarData.Length, pictureBoxGraphics, pictureBoxRPLidarDataViewer, zones);
             }
 
             serialPortRPLidarDataIndex = 0;
 
             //Lidar zone drawing.
             //pictureBoxGraphics = zone.drawLidarZone(pictureBoxGraphics);//Unscaled zone.
-            pictureBoxGraphics = zone.drawLidarZone(pictureBoxGraphics, calculateScaleRation(0.0f, 12000.0f, 0.0f, (float)pictureBoxRPLidarDataViewer.Width));
+            //pictureBoxGraphics = zone.drawLidarZone(pictureBoxGraphics, calculateScaleRation(0.0f, 12000.0f, 0.0f, (float)pictureBoxRPLidarDataViewer.Width));
+            
+            pictureBoxGraphics = zones[1].drawLidarZone(pictureBoxGraphics, calculateScaleRation(0.0f, 12000.0f, 0.0f, (float)pictureBoxRPLidarDataViewer.Width));
+            pictureBoxGraphics = zones[0].drawLidarZone(pictureBoxGraphics, calculateScaleRation(0.0f, 12000.0f, 0.0f, (float)pictureBoxRPLidarDataViewer.Width));
         }
 
 
@@ -632,6 +640,40 @@ namespace RPLidarDataViewerProject
 
             return (graphicsObject);
         }
+        Graphics drawLidarDataSample(Graphics graphicsObject, PictureBox pictureBoxObject, Pen pen, float angleDataOfLidar, float distaceInAngleDataOflidar_mm, uint minLidarDistance_mm, uint maxLidarDistance_mm, LidarZone[] lidarZones)
+        {
+            int pictureBoxSizeWidth = pictureBoxObject.Size.Width;
+            int pictureBoxSizeHeight = pictureBoxObject.Size.Height;
+
+            int centerX = pictureBoxSizeWidth / 2;
+            int centerY = pictureBoxSizeHeight / 2;
+
+            //Lidar sample in zone check.
+            var coordinate = convertPolarToCartesian(angleDataOfLidar, distaceInAngleDataOflidar_mm);
+            if (lidarZones[0].checkInTheZone((float)coordinate.x, (float)(coordinate.y)) == true)
+            {
+                pen.Brush = Brushes.Red;
+            }
+            else if(lidarZones[1].checkInTheZone((float)coordinate.x, (float)(coordinate.y)) == true)
+            {
+                pen.Brush = Brushes.Yellow;
+            }
+            else
+            {
+                pen.Brush = Brushes.Purple;
+            }
+
+            //lidar sample scale.
+            int scaledLidarDataSample_X, scaledLidarDataSample_Y;
+            float scaledLidarDistance_mm = distaceInAngleDataOflidar_mm * calculateScaleRation(minLidarDistance_mm, maxLidarDistance_mm, 0, centerX);
+            var scaledCoordinate = convertPolarToCartesian(angleDataOfLidar, scaledLidarDistance_mm);
+            scaledLidarDataSample_X = scaledCoordinate.x;
+            scaledLidarDataSample_Y = (-1) * scaledCoordinate.y;//Scaled y axis value converted to graphic y axis value.
+
+            graphicsObject.FillEllipse(pen.Brush, scaledLidarDataSample_X - 1, scaledLidarDataSample_Y - 1, 3, 3);
+
+            return (graphicsObject);
+        }
 
 
         //Lidar Data drawer functions.
@@ -658,6 +700,20 @@ namespace RPLidarDataViewerProject
             for (int i = 0; i < lidarData.Length; i++)
             {
                 graphicsObject = drawLidarDataSample(graphicsObject, pictureBoxObject, lidarSampleDrawPen, lidarData[i].Angle, lidarData[i].Distance, 150, 6000, lidarzone);
+            }
+
+            return (graphicsObject);
+        }
+        public Graphics drawLidarData(RPLidarData[] lidarData, int dataCount, Graphics graphicsObject, PictureBox pictureBoxObject, LidarZone[] lidarzones)
+        {
+            //Lidar viewer backgroung create
+            graphicsObject = drawLidarViwerBackground(graphicsObject, pictureBoxObject);
+
+            //Lidar data draw
+            Pen lidarSampleDrawPen = new Pen(Brushes.Purple, 3);
+            for (int i = 0; i < lidarData.Length; i++)
+            {
+                graphicsObject = drawLidarDataSample(graphicsObject, pictureBoxObject, lidarSampleDrawPen, lidarData[i].Angle, lidarData[i].Distance, 150, 6000, lidarzones);
             }
 
             return (graphicsObject);
