@@ -321,9 +321,9 @@ namespace RPLidarDataViewerProject
             //lidar sample data drawing
             if (rPLidarData != null)
             {
-                //pictureBoxGraphics = drawLidarData(rPLidarData, rPLidarData.Length, pictureBoxGraphics, pictureBoxRPLidarDataViewer);//Without zone.
-                //pictureBoxGraphics = drawLidarData(rPLidarData, rPLidarData.Length, pictureBoxGraphics, pictureBoxRPLidarDataViewer, zone);
-                pictureBoxGraphics = drawLidarData(rPLidarData, rPLidarData.Length, pictureBoxGraphics, pictureBoxRPLidarDataViewer, zones);
+                //pictureBoxGraphics = drawLidarData(rPLidarData, pictureBoxGraphics, pictureBoxRPLidarDataViewer);//Without zone.
+                //pictureBoxGraphics = drawLidarData(rPLidarData, pictureBoxGraphics, pictureBoxRPLidarDataViewer, zone);
+                pictureBoxGraphics = drawLidarData(rPLidarData, pictureBoxGraphics, pictureBoxRPLidarDataViewer, zones);
             }
 
             serialPortRPLidarDataIndex = 0;
@@ -332,8 +332,23 @@ namespace RPLidarDataViewerProject
             //pictureBoxGraphics = zone.drawLidarZone(pictureBoxGraphics);//Unscaled zone.
             //pictureBoxGraphics = zone.drawLidarZone(pictureBoxGraphics, calculateScaleRation(0.0f, 12000.0f, 0.0f, (float)pictureBoxRPLidarDataViewer.Width));
             
-            pictureBoxGraphics = zones[1].drawLidarZone(pictureBoxGraphics, calculateScaleRation(0.0f, 12000.0f, 0.0f, (float)pictureBoxRPLidarDataViewer.Width));
-            pictureBoxGraphics = zones[0].drawLidarZone(pictureBoxGraphics, calculateScaleRation(0.0f, 12000.0f, 0.0f, (float)pictureBoxRPLidarDataViewer.Width));
+            //Mid Lidar zones drawing.
+            for (int midZoneIndex = 0; midZoneIndex < zones.Length; midZoneIndex++)
+            {
+                if (zones[midZoneIndex].DistanceType == LidarZone.ZoneDistanceTypes.Mid)
+                {
+                    pictureBoxGraphics = zones[midZoneIndex].drawLidarZone(pictureBoxGraphics, calculateScaleRation(0.0f, 12000.0f, 0.0f, (float)pictureBoxRPLidarDataViewer.Width));
+                }
+            }
+
+            //Low Lidar zones drawing.
+            for (int lowZoneIndex = 0; lowZoneIndex < zones.Length; lowZoneIndex++)
+            {
+                if (zones[lowZoneIndex].DistanceType == LidarZone.ZoneDistanceTypes.Low)
+                {
+                    pictureBoxGraphics = zones[lowZoneIndex].drawLidarZone(pictureBoxGraphics, calculateScaleRation(0.0f, 12000.0f, 0.0f, (float)pictureBoxRPLidarDataViewer.Width));
+                }
+            }
         }
 
 
@@ -622,7 +637,8 @@ namespace RPLidarDataViewerProject
             var coordinate = convertPolarToCartesian(angleDataOfLidar, distaceInAngleDataOflidar_mm);
             if (lidarZone.checkInTheZone((float)coordinate.x, (float)(coordinate.y)) == true)
             {
-                pen.Brush = Brushes.Yellow;
+                if (lidarZone.DistanceType == LidarZone.ZoneDistanceTypes.Mid) pen.Brush = Brushes.Yellow;
+                if (lidarZone.DistanceType == LidarZone.ZoneDistanceTypes.Low) pen.Brush = Brushes.Yellow;
             }
             else
             {
@@ -640,44 +656,45 @@ namespace RPLidarDataViewerProject
 
             return (graphicsObject);
         }
-        Graphics drawLidarDataSample(Graphics graphicsObject, PictureBox pictureBoxObject, Pen pen, float angleDataOfLidar, float distaceInAngleDataOflidar_mm, uint minLidarDistance_mm, uint maxLidarDistance_mm, LidarZone[] lidarZones)
-        {
-            int pictureBoxSizeWidth = pictureBoxObject.Size.Width;
-            int pictureBoxSizeHeight = pictureBoxObject.Size.Height;
+        //Graphics drawLidarDataSample(Graphics graphicsObject, PictureBox pictureBoxObject, Pen pen, float angleDataOfLidar, float distaceInAngleDataOflidar_mm, uint minLidarDistance_mm, uint maxLidarDistance_mm, LidarZone[] lidarZones)
+        //{
+        //    int pictureBoxSizeWidth = pictureBoxObject.Size.Width;
+        //    int pictureBoxSizeHeight = pictureBoxObject.Size.Height;
 
-            int centerX = pictureBoxSizeWidth / 2;
-            int centerY = pictureBoxSizeHeight / 2;
+        //    int centerX = pictureBoxSizeWidth / 2;
+        //    int centerY = pictureBoxSizeHeight / 2;
 
-            //Lidar sample in zone check.
-            var coordinate = convertPolarToCartesian(angleDataOfLidar, distaceInAngleDataOflidar_mm);
-            if (lidarZones[0].checkInTheZone((float)coordinate.x, (float)(coordinate.y)) == true)
-            {
-                pen.Brush = Brushes.Red;
-            }
-            else if(lidarZones[1].checkInTheZone((float)coordinate.x, (float)(coordinate.y)) == true)
-            {
-                pen.Brush = Brushes.Yellow;
-            }
-            else
-            {
-                pen.Brush = Brushes.Purple;
-            }
+        //    //Lidar sample in zone check.
+        //    var coordinate = convertPolarToCartesian(angleDataOfLidar, distaceInAngleDataOflidar_mm);
+        //    if (lidarZones[0].checkInTheZone((float)coordinate.x, (float)(coordinate.y)) == true)
+        //    {
+        //        pen.Brush = Brushes.Red;
+        //    }
+        //    else if (lidarZones[1].checkInTheZone((float)coordinate.x, (float)(coordinate.y)) == true)
+        //    {
+        //        pen.Brush = Brushes.Yellow;
+        //    }
+        //    else
+        //    {
+        //        pen.Brush = Brushes.Purple;
+        //    }
 
-            //lidar sample scale.
-            int scaledLidarDataSample_X, scaledLidarDataSample_Y;
-            float scaledLidarDistance_mm = distaceInAngleDataOflidar_mm * calculateScaleRation(minLidarDistance_mm, maxLidarDistance_mm, 0, centerX);
-            var scaledCoordinate = convertPolarToCartesian(angleDataOfLidar, scaledLidarDistance_mm);
-            scaledLidarDataSample_X = scaledCoordinate.x;
-            scaledLidarDataSample_Y = (-1) * scaledCoordinate.y;//Scaled y axis value converted to graphic y axis value.
+        //    //lidar sample scale.
+        //    int scaledLidarDataSample_X, scaledLidarDataSample_Y;
+        //    float scaledLidarDistance_mm = distaceInAngleDataOflidar_mm * calculateScaleRation(minLidarDistance_mm, maxLidarDistance_mm, 0, centerX);
+        //    var scaledCoordinate = convertPolarToCartesian(angleDataOfLidar, scaledLidarDistance_mm);
+        //    scaledLidarDataSample_X = scaledCoordinate.x;
+        //    scaledLidarDataSample_Y = (-1) * scaledCoordinate.y;//Scaled y axis value converted to graphic y axis value.
 
-            graphicsObject.FillEllipse(pen.Brush, scaledLidarDataSample_X - 1, scaledLidarDataSample_Y - 1, 3, 3);
+        //    graphicsObject.FillEllipse(pen.Brush, scaledLidarDataSample_X - 1, scaledLidarDataSample_Y - 1, 3, 3);
 
-            return (graphicsObject);
-        }
+        //    return (graphicsObject);
+        //}
 
 
         //Lidar Data drawer functions.
-        public Graphics drawLidarData(RPLidarData[] lidarData, int dataCount, Graphics graphicsObject, PictureBox pictureBoxObject)
+        
+        public Graphics drawLidarData(RPLidarData[] lidarData, Graphics graphicsObject, PictureBox pictureBoxObject)
         {
             //Lidar viewer backgroung create
             graphicsObject = drawLidarViwerBackground(graphicsObject, pictureBoxObject);
@@ -690,7 +707,7 @@ namespace RPLidarDataViewerProject
 
             return (graphicsObject);
         }
-        public Graphics drawLidarData(RPLidarData[] lidarData, int dataCount, Graphics graphicsObject, PictureBox pictureBoxObject, LidarZone lidarzone)
+        public Graphics drawLidarData(RPLidarData[] lidarData, Graphics graphicsObject, PictureBox pictureBoxObject, LidarZone lidarZone)
         {
             //Lidar viewer backgroung create
             graphicsObject = drawLidarViwerBackground(graphicsObject, pictureBoxObject);
@@ -699,12 +716,12 @@ namespace RPLidarDataViewerProject
             Pen lidarSampleDrawPen = new Pen(Brushes.Purple, 3);
             for (int i = 0; i < lidarData.Length; i++)
             {
-                graphicsObject = drawLidarDataSample(graphicsObject, pictureBoxObject, lidarSampleDrawPen, lidarData[i].Angle, lidarData[i].Distance, 150, 6000, lidarzone);
+                graphicsObject = drawLidarDataSample(graphicsObject, pictureBoxObject, lidarSampleDrawPen, lidarData[i].Angle, lidarData[i].Distance, 150, 6000, lidarZone);
             }
 
             return (graphicsObject);
         }
-        public Graphics drawLidarData(RPLidarData[] lidarData, int dataCount, Graphics graphicsObject, PictureBox pictureBoxObject, LidarZone[] lidarzones)
+        public Graphics drawLidarData(RPLidarData[] lidarData, Graphics graphicsObject, PictureBox pictureBoxObject, LidarZone[] lidarZones)
         {
             //Lidar viewer backgroung create
             graphicsObject = drawLidarViwerBackground(graphicsObject, pictureBoxObject);
@@ -713,7 +730,35 @@ namespace RPLidarDataViewerProject
             Pen lidarSampleDrawPen = new Pen(Brushes.Purple, 3);
             for (int i = 0; i < lidarData.Length; i++)
             {
-                graphicsObject = drawLidarDataSample(graphicsObject, pictureBoxObject, lidarSampleDrawPen, lidarData[i].Angle, lidarData[i].Distance, 150, 6000, lidarzones);
+                //Default color assignment for each lidar sample.
+                lidarSampleDrawPen.Brush = Brushes.Purple;
+
+                //Lidar sample in Mid zones check.
+                var coordinate = convertPolarToCartesian(lidarData[i].Angle, lidarData[i].Distance);
+                for (int MidzonesIndex = 0; MidzonesIndex < lidarZones.Length; MidzonesIndex++)
+                {
+                    if (lidarZones[MidzonesIndex].checkInTheZone((float)coordinate.x, (float)(coordinate.y)) == true)
+                    {
+                        if (lidarZones[MidzonesIndex].DistanceType == LidarZone.ZoneDistanceTypes.Mid)
+                        {
+                            lidarSampleDrawPen.Brush = Brushes.Yellow;
+                        }
+                    }
+                }
+
+                //Lidar sample in Low zones check.
+                for (int LowZonesIndex = 0; LowZonesIndex < lidarZones.Length; LowZonesIndex++)
+                {
+                    if (lidarZones[LowZonesIndex].checkInTheZone((float)coordinate.x, (float)(coordinate.y)) == true)
+                    {
+                        if (lidarZones[LowZonesIndex].DistanceType == LidarZone.ZoneDistanceTypes.Low)
+                        {
+                            lidarSampleDrawPen.Brush = Brushes.Red;
+                        }
+                    }
+                }
+
+                graphicsObject = drawLidarDataSample(graphicsObject, pictureBoxObject, lidarSampleDrawPen, lidarData[i].Angle, lidarData[i].Distance, 150, 6000);
             }
 
             return (graphicsObject);
