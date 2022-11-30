@@ -46,6 +46,16 @@ namespace RPLidarDataViewerProject
         //LidarZone Object
         LidarZone[] zones = new LidarZone[2];
 
+        //Forklift speed.(30112022)
+        public enum SpeedStatus
+        {
+            LowSpeed,
+            MidSpeed,
+            MaxSpeed,
+        }
+        SpeedStatus lidarZoneOldState = SpeedStatus.MaxSpeed;
+        SpeedStatus lidarZoneCurrentState = SpeedStatus.MaxSpeed;
+
         public Form1()
         {
             InitializeComponent();
@@ -207,7 +217,9 @@ namespace RPLidarDataViewerProject
                 {
                     Buffer.BlockCopy(buffer, bufferOffset, spLidarScanRawDataBuf, 0, 5);
 
-                    rPLidarData[serialPortRPLidarDataIndex] = createRPlidarDataFromRawData(spLidarScanRawDataBuf);
+                    RPLidarData tempOneSampleOfRPLidarData = createRPlidarDataFromRawData(spLidarScanRawDataBuf); //(30112022)
+
+                    rPLidarData[serialPortRPLidarDataIndex] = tempOneSampleOfRPLidarData;
                     //textBoxSeriPortDataReceive.Invoke(new showTextSerialPortData(writeToTextBox), rPLidarData[serialPortRPLidarDataIndex]);
 
                     if (rPLidarData[serialPortRPLidarDataIndex].StartFlagBit == true)
@@ -328,10 +340,13 @@ namespace RPLidarDataViewerProject
 
             serialPortRPLidarDataIndex = 0;
 
+            //Clear RPLidardatas
+            Array.Clear(rPLidarData, 0, rPLidarData.Length);//(30112022)
+
             //Lidar zone drawing.
             //pictureBoxGraphics = zone.drawLidarZone(pictureBoxGraphics);//Unscaled zone.
             //pictureBoxGraphics = zone.drawLidarZone(pictureBoxGraphics, calculateScaleRation(0.0f, 12000.0f, 0.0f, (float)pictureBoxRPLidarDataViewer.Width));
-            
+
             //Mid Lidar zones drawing.
             for (int midZoneIndex = 0; midZoneIndex < zones.Length; midZoneIndex++)
             {
@@ -340,7 +355,6 @@ namespace RPLidarDataViewerProject
                     pictureBoxGraphics = zones[midZoneIndex].drawLidarZone(pictureBoxGraphics, calculateScaleRation(0.0f, 12000.0f, 0.0f, (float)pictureBoxRPLidarDataViewer.Width));
                 }
             }
-
             //Low Lidar zones drawing.
             for (int lowZoneIndex = 0; lowZoneIndex < zones.Length; lowZoneIndex++)
             {
@@ -349,6 +363,44 @@ namespace RPLidarDataViewerProject
                     pictureBoxGraphics = zones[lowZoneIndex].drawLidarZone(pictureBoxGraphics, calculateScaleRation(0.0f, 12000.0f, 0.0f, (float)pictureBoxRPLidarDataViewer.Width));
                 }
             }
+
+            //Speed status check.(30112022)
+            if (zones[0].SampleDetected == true)//Low type zone
+            {
+                lidarZoneCurrentState = SpeedStatus.LowSpeed;
+                lidarZoneOldState = lidarZoneCurrentState;
+
+                panelSpeedStatus.BackColor = Color.Red;
+            }
+            else if (zones[1].SampleDetected == true)//Mid type zone
+            {
+                if (lidarZoneOldState == SpeedStatus.LowSpeed)
+                {
+                    lidarZoneCurrentState = SpeedStatus.MaxSpeed;
+
+                    panelSpeedStatus.BackColor = Color.Green;
+                }
+                else
+                {
+                    lidarZoneCurrentState = SpeedStatus.MidSpeed;
+                    lidarZoneOldState = lidarZoneCurrentState;
+
+                    panelSpeedStatus.BackColor = Color.Yellow;
+                }
+            }
+            else
+            {
+                lidarZoneCurrentState = SpeedStatus.MaxSpeed;
+                lidarZoneOldState = lidarZoneCurrentState;
+
+                panelSpeedStatus.BackColor = Color.Green;
+            }
+
+            ////Clear detected sample count
+            //for (int zoneIndex = 0; zoneIndex<zones.Length; zoneIndex++)
+            //{
+            //    zones[zoneIndex].clearDetectedSampleCount();
+            //}
         }
 
 
@@ -414,6 +466,8 @@ namespace RPLidarDataViewerProject
 
             return tempLidarRawDatas;
         }
+        
+        //lidar data creater.
         public RPLidarData createRPlidarDataFromRawData(Byte[] bytesOfRawLidarDataFrame)
         {
             RPLidarData tempRPLidarData = new RPLidarData();
@@ -456,12 +510,15 @@ namespace RPLidarDataViewerProject
             return firstBytes.SequenceEqual(secondBytes);
         }
 
-        //Lidar Data Kontrol ediliyor.Yazılacak!!!(Kullanım dışı.)
-        public bool checkLidarData()
+        //Lidar Data Kontrol ediliyor.
+        public bool checkLidarData(RPLidarData oneSampleOfRPLidarData)  //(30112022)
         {
             bool checkFlag = false;
 
+            int lidarMinDistanceThreshold_mm = 75;
 
+            if (oneSampleOfRPLidarData.Quality >= 15 && oneSampleOfRPLidarData.Distance > lidarMinDistanceThreshold_mm) checkFlag = true;
+            else checkFlag = false;
 
             return checkFlag;
         }
@@ -638,7 +695,7 @@ namespace RPLidarDataViewerProject
             if (lidarZone.checkInTheZone((float)coordinate.x, (float)(coordinate.y)) == true)
             {
                 if (lidarZone.DistanceType == LidarZone.ZoneDistanceTypes.Mid) pen.Brush = Brushes.Yellow;
-                if (lidarZone.DistanceType == LidarZone.ZoneDistanceTypes.Low) pen.Brush = Brushes.Yellow;
+                if (lidarZone.DistanceType == LidarZone.ZoneDistanceTypes.Low) pen.Brush = Brushes.Red; //(30112022)
             }
             else
             {
@@ -730,6 +787,9 @@ namespace RPLidarDataViewerProject
             Pen lidarSampleDrawPen = new Pen(Brushes.Purple, 3);
             for (int i = 0; i < lidarData.Length; i++)
             {
+                //Buraya lidar data kontrıolü ekle continuo kullan.!!!!(30112022) Data okumaya ekleyemez isen buraya ekle.buraya şart olarak ekle.
+                if (checkLidarData(lidarData[i]) == false) continue;
+
                 //Default color assignment for each lidar sample.
                 lidarSampleDrawPen.Brush = Brushes.Purple;
 
@@ -797,7 +857,7 @@ namespace RPLidarDataViewerProject
             private Point positionOfStartingForGraphic;
             private Point positionOfCornerMin;
             private Point positionOfCornerMax;
-            private bool detectOfSample;
+            private bool sampleDetected;
             private uint detectedSampleCount;
 
             public ZoneDistanceTypes DistanceType
@@ -847,10 +907,10 @@ namespace RPLidarDataViewerProject
             {
                 get{return this.positionOfCornerMax;}
             }
-            public bool DetectOfSample
+            public bool SampleDetected
             {
-                get { return this.detectOfSample; }
-                set { this.detectOfSample = value; }
+                get { return this.sampleDetected; }
+                set { this.sampleDetected = value; }
             }
             public uint DetectedSampleCount
             {
@@ -869,7 +929,7 @@ namespace RPLidarDataViewerProject
                 var corner = calculateTheMaxAndMinCornerCoordinatesOfTheZone(this.Size, this.positionOfStarting);//NOTE: Bu fonksiyon değer döndüren hale getirilecek döndürdüğü yapı tüm pozisyonları içeren bir yapı şekilnde olabilir.Bakılacak!! Şuan corner max min şeklinde iki ayrı Point nesnesi.
                 this.positionOfCornerMin = corner.Min;
                 this.positionOfCornerMax = corner.Max;
-                this.DetectOfSample = false;
+                this.SampleDetected = false;
                 this.DetectedSampleCount = 0;
             }
             public LidarZone(ZoneDistanceTypes zoneDistanceType, Size zoneSize, Size zoneOffsetSize)
@@ -882,7 +942,7 @@ namespace RPLidarDataViewerProject
                 var corner = calculateTheMaxAndMinCornerCoordinatesOfTheZone(this.Size, this.positionOfStarting);//NOTE: Bu fonksiyon değer döndüren hale getirilecek döndürdüğü yapı tüm pozisyonları içeren bir yapı şekilnde olabilir.Bakılacak!! Şuan corner max min şeklinde iki ayrı Point nesnesi.
                 this.positionOfCornerMin = corner.Min;
                 this.positionOfCornerMax = corner.Max;
-                this.DetectOfSample = false;
+                this.SampleDetected = false;
                 this.DetectedSampleCount = 0;
             }
 
@@ -965,6 +1025,9 @@ namespace RPLidarDataViewerProject
                 if((coordinateX >= this.positionOfCornerMin.X) && (coordinateY >= this.positionOfCornerMin.Y) && (coordinateX <= this.positionOfCornerMax.X) && (coordinateY <= this.positionOfCornerMax.Y))
                 {
                     detectedOfSample = true;
+
+                    this.DetectedSampleCount++;//(30112022)
+                    this.SampleDetected = true;
                 }
                 else
                 {
@@ -972,6 +1035,11 @@ namespace RPLidarDataViewerProject
                 }
 
                 return detectedOfSample;
+            }
+            public void clearDetectedSampleCount()//(30112022)
+            {
+                this.DetectedSampleCount = 0;
+                this.SampleDetected = false;
             }
         }
     }

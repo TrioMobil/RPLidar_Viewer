@@ -90,6 +90,7 @@
             this.labelZoneWidthOffset = new System.Windows.Forms.Label();
             this.groupBoxDataSettings = new System.Windows.Forms.GroupBox();
             this.groupBoxLidarDatas = new System.Windows.Forms.GroupBox();
+            this.panelSpeedStatus = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxRPLidarDataViewer)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBoxLidarViewer.SuspendLayout();
@@ -417,6 +418,7 @@
             // 
             // groupBoxLidarViewer
             // 
+            this.groupBoxLidarViewer.Controls.Add(this.panelSpeedStatus);
             this.groupBoxLidarViewer.Controls.Add(this.groupBoxZoneSettings_2);
             this.groupBoxLidarViewer.Controls.Add(this.groupBoxZoneSettings);
             this.groupBoxLidarViewer.Controls.Add(this.groupBoxDataSettings);
@@ -517,7 +519,7 @@
             this.numericUpDownLidarZoneHeightOffset_2.Size = new System.Drawing.Size(60, 20);
             this.numericUpDownLidarZoneHeightOffset_2.TabIndex = 40;
             this.numericUpDownLidarZoneHeightOffset_2.Value = new decimal(new int[] {
-            1000,
+            1250,
             0,
             0,
             0});
@@ -711,6 +713,11 @@
             this.numericUpDownLidarZoneHeightOffset.Name = "numericUpDownLidarZoneHeightOffset";
             this.numericUpDownLidarZoneHeightOffset.Size = new System.Drawing.Size(60, 20);
             this.numericUpDownLidarZoneHeightOffset.TabIndex = 40;
+            this.numericUpDownLidarZoneHeightOffset.Value = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
             // 
             // numericUpDownLidarZoneHeight
             // 
@@ -729,7 +736,7 @@
             this.numericUpDownLidarZoneHeight.Size = new System.Drawing.Size(60, 20);
             this.numericUpDownLidarZoneHeight.TabIndex = 39;
             this.numericUpDownLidarZoneHeight.Value = new decimal(new int[] {
-            1000,
+            500,
             0,
             0,
             0});
@@ -855,6 +862,14 @@
             this.groupBoxLidarDatas.TabStop = false;
             this.groupBoxLidarDatas.Text = "Lidar Datas";
             // 
+            // panelSpeedStatus
+            // 
+            this.panelSpeedStatus.BackColor = System.Drawing.Color.White;
+            this.panelSpeedStatus.Location = new System.Drawing.Point(980, 434);
+            this.panelSpeedStatus.Name = "panelSpeedStatus";
+            this.panelSpeedStatus.Size = new System.Drawing.Size(100, 50);
+            this.panelSpeedStatus.TabIndex = 42;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -952,6 +967,7 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Panel panelSpeedStatus;
     }
 }
 
