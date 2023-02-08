@@ -56,6 +56,10 @@ namespace RPLidarDataViewerProject
         SpeedStatus lidarZoneOldState = SpeedStatus.MaxSpeed;
         SpeedStatus lidarZoneCurrentState = SpeedStatus.MaxSpeed;
 
+        //Zone dışına çıkışlarında timeout kullanımı için eklendi.(16012023)
+        int zoneOutTimeout_ms = 0;
+        int zoneOutTimeoutThreshold_ms = 1000;
+
         public Form1()
         {
             InitializeComponent();
@@ -367,6 +371,14 @@ namespace RPLidarDataViewerProject
             //Speed status check.(30112022)
             if (zones[0].SampleDetected == true)//Low type zone
             {
+                //Timeout counter Stop edilip sıfırlanıyor. Aynı zamanda Mid->Low veya Max->Low geçişlerinde timer çalıştı ise sayılmış değeri siliyor.(17012023)
+                if (timer1.Enabled == true)
+                {
+                    timer1.Stop();
+                    timer1.Enabled = false;
+                    zoneOutTimeout_ms = 0;
+                }
+
                 lidarZoneCurrentState = SpeedStatus.LowSpeed;
                 lidarZoneOldState = lidarZoneCurrentState;
 
@@ -376,12 +388,30 @@ namespace RPLidarDataViewerProject
             {
                 if (lidarZoneOldState == SpeedStatus.LowSpeed)
                 {
-                    lidarZoneCurrentState = SpeedStatus.MaxSpeed;
+                    if (timer1.Enabled == false)
+                    {
+                        timer1.Start();
+                        timer1.Enabled = true;
+                    }
+                    else if (zoneOutTimeout_ms > zoneOutTimeoutThreshold_ms)
+                    {
+                        timer1.Stop();//Mid -> Low geçişlerinde Hız Max durumda iken bir defa timeout çalışması için sadece timer durdurudu.(17012023)
 
-                    panelSpeedStatus.BackColor = Color.Green;
+                        lidarZoneCurrentState = SpeedStatus.MaxSpeed;
+
+                        panelSpeedStatus.BackColor = Color.Green;
+                    }
                 }
                 else
                 {
+                    //Timeout counter Stop edilip sıfırlanıyor. Aynı zamanda Max->Mid geçişlerinde timer çalıştı ise sayılmış değeri siliyor.(17012023)
+                    if (timer1.Enabled == true)
+                    {
+                        timer1.Stop();
+                        timer1.Enabled = false;
+                        zoneOutTimeout_ms = 0;
+                    }
+
                     lidarZoneCurrentState = SpeedStatus.MidSpeed;
                     lidarZoneOldState = lidarZoneCurrentState;
 
@@ -390,10 +420,34 @@ namespace RPLidarDataViewerProject
             }
             else
             {
-                lidarZoneCurrentState = SpeedStatus.MaxSpeed;
-                lidarZoneOldState = lidarZoneCurrentState;
+                //Mid Zone alanından çıkış yaptığında ve tekrar Mid alanına girdiğinde Mid hizına dönmesi için belirli bir timeout kullanılacak (16012023)
+                if (lidarZoneOldState == SpeedStatus.LowSpeed || lidarZoneOldState == SpeedStatus.MidSpeed)
+                {
+                    if(timer1.Enabled == false)
+                    {
+                        timer1.Start();
+                        timer1.Enabled = true;
+                    }
+                    else if (zoneOutTimeout_ms > zoneOutTimeoutThreshold_ms)
+                    {
+                        timer1.Stop();
+                        timer1.Enabled = false;
+                        zoneOutTimeout_ms = 0;
 
-                panelSpeedStatus.BackColor = Color.Green;
+                        lidarZoneCurrentState = SpeedStatus.MaxSpeed;
+                        lidarZoneOldState = lidarZoneCurrentState;
+
+                        panelSpeedStatus.BackColor = Color.Green;
+                    }
+                }
+                else
+                {
+                    lidarZoneCurrentState = SpeedStatus.MaxSpeed;
+                    lidarZoneOldState = lidarZoneCurrentState;
+
+                    panelSpeedStatus.BackColor = Color.Green;
+                }
+
             }
 
             ////Clear detected sample count
@@ -402,7 +456,11 @@ namespace RPLidarDataViewerProject
             //    zones[zoneIndex].clearDetectedSampleCount();
             //}
         }
-
+        
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            zoneOutTimeout_ms += timer1.Interval;
+        }
 
 
         //Dosyadan okunan işlemi için raw data okuma ve raw datadan anlamla dataya çevirme işlemleri.

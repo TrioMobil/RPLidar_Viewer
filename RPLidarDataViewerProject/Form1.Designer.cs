@@ -62,6 +62,7 @@
             this.buttonSeriPortCon = new System.Windows.Forms.Button();
             this.comboBoxSeriPortList = new System.Windows.Forms.ComboBox();
             this.groupBoxLidarViewer = new System.Windows.Forms.GroupBox();
+            this.panelSpeedStatus = new System.Windows.Forms.Panel();
             this.groupBoxZoneSettings_2 = new System.Windows.Forms.GroupBox();
             this.numericUpDownLidarZoneWidthOffset_2 = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownLidarZoneWidth_2 = new System.Windows.Forms.NumericUpDown();
@@ -90,7 +91,7 @@
             this.labelZoneWidthOffset = new System.Windows.Forms.Label();
             this.groupBoxDataSettings = new System.Windows.Forms.GroupBox();
             this.groupBoxLidarDatas = new System.Windows.Forms.GroupBox();
-            this.panelSpeedStatus = new System.Windows.Forms.Panel();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxRPLidarDataViewer)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBoxLidarViewer.SuspendLayout();
@@ -430,6 +431,14 @@
             this.groupBoxLidarViewer.TabIndex = 38;
             this.groupBoxLidarViewer.TabStop = false;
             this.groupBoxLidarViewer.Text = "Lidar Data Viewer";
+            // 
+            // panelSpeedStatus
+            // 
+            this.panelSpeedStatus.BackColor = System.Drawing.Color.White;
+            this.panelSpeedStatus.Location = new System.Drawing.Point(980, 434);
+            this.panelSpeedStatus.Name = "panelSpeedStatus";
+            this.panelSpeedStatus.Size = new System.Drawing.Size(100, 50);
+            this.panelSpeedStatus.TabIndex = 42;
             // 
             // groupBoxZoneSettings_2
             // 
@@ -862,13 +871,9 @@
             this.groupBoxLidarDatas.TabStop = false;
             this.groupBoxLidarDatas.Text = "Lidar Datas";
             // 
-            // panelSpeedStatus
+            // timer1
             // 
-            this.panelSpeedStatus.BackColor = System.Drawing.Color.White;
-            this.panelSpeedStatus.Location = new System.Drawing.Point(980, 434);
-            this.panelSpeedStatus.Name = "panelSpeedStatus";
-            this.panelSpeedStatus.Size = new System.Drawing.Size(100, 50);
-            this.panelSpeedStatus.TabIndex = 42;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // Form1
             // 
@@ -968,6 +973,7 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Panel panelSpeedStatus;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 
