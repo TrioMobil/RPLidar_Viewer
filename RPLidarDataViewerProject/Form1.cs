@@ -44,7 +44,7 @@ namespace RPLidarDataViewerProject
         List<RPLidarData> rpLidarDatas = new List<RPLidarData>();   //NOTE: Not using now.
 
         //LidarZone Object
-        LidarZone[] zones = new LidarZone[2];
+        LidarZone[] zones = new LidarZone[3];
 
         //Forklift speed.(30112022)
         public enum SpeedStatus
@@ -329,6 +329,10 @@ namespace RPLidarDataViewerProject
             Size zoneMidSizeOffset = new Size((int)Convert.ToInt32(numericUpDownLidarMidZoneWidthOffset.Value), (int)Convert.ToInt32(numericUpDownLidarMidZoneHeightOffset.Value));
             zones[1] = new LidarZone(LidarZone.ZoneDistanceTypes.Mid, zoneMidSize, zoneMidSizeOffset);
 
+            Size zoneExcludeSize = new Size((int)Convert.ToUInt32(numericUpDownLidarExcludeZoneWidth.Value), (int)Convert.ToUInt32(numericUpDownLidarExcludeZoneHeight.Value));
+            Size zoneExcludeSizeOffset = new Size((int)Convert.ToInt32(numericUpDownLidarExcludeZoneWidthOffset.Value), (int)Convert.ToInt32(numericUpDownLidarExcludeZoneHeightOffset.Value));
+            zones[2] = new LidarZone(LidarZone.ZoneDistanceTypes.Exclude, zoneExcludeSize, zoneExcludeSizeOffset);
+
             //lidar sample data drawing
             if (rPLidarData != null)
             {
@@ -360,6 +364,14 @@ namespace RPLidarDataViewerProject
                 if (zones[lowZoneIndex].DistanceType == LidarZone.ZoneDistanceTypes.Low)
                 {
                     pictureBoxGraphics = zones[lowZoneIndex].drawLidarZone(pictureBoxGraphics, calculateScaleRation(0.0f, 12000.0f, 0.0f, (float)pictureBoxRPLidarDataViewer.Width));
+                }
+            }
+            //Exclude Lidar zones drawing.
+            for (int excludeZoneIndex = 0; excludeZoneIndex < zones.Length; excludeZoneIndex++)
+            {
+                if (zones[excludeZoneIndex].DistanceType == LidarZone.ZoneDistanceTypes.Exclude)
+                {
+                    pictureBoxGraphics = zones[excludeZoneIndex].drawLidarZone(pictureBoxGraphics, calculateScaleRation(0.0f, 12000.0f, 0.0f, (float)pictureBoxRPLidarDataViewer.Width));
                 }
             }
 
@@ -846,8 +858,9 @@ namespace RPLidarDataViewerProject
                 //Default color assignment for each lidar sample.
                 lidarSampleDrawPen.Brush = Brushes.Purple;
 
-                //Lidar sample in Mid zones check.
                 var coordinate = convertPolarToCartesian(lidarData[i].Angle, lidarData[i].Distance);
+
+                //Lidar sample in Mid zones check.
                 for (int MidzonesIndex = 0; MidzonesIndex < lidarZones.Length; MidzonesIndex++)
                 {
                     if (lidarZones[MidzonesIndex].checkInTheZone((float)coordinate.x, (float)(coordinate.y)) == true)
@@ -870,6 +883,20 @@ namespace RPLidarDataViewerProject
                         }
                     }
                 }
+
+                //Lidar sample in Exclude zones check.
+                for (int excludeZonesIndex = 0; excludeZonesIndex < lidarZones.Length; excludeZonesIndex++)
+                {
+                    if (lidarZones[excludeZonesIndex].checkInTheZone((float)coordinate.x, (float)(coordinate.y)) == true)
+                    {
+                        if (lidarZones[excludeZonesIndex].DistanceType == LidarZone.ZoneDistanceTypes.Exclude)
+                        {
+                            lidarSampleDrawPen.Brush = Brushes.Blue;
+                        }
+                    }
+                }
+
+                //NOTE: tüm zone alanları için ayrı ayrı yazılan for döngüsü birleştirilebilir (13022023).
 
                 graphicsObject = drawLidarDataSample(graphicsObject, pictureBoxObject, lidarSampleDrawPen, lidarData[i].Angle, lidarData[i].Distance, 150, 6000);
             }
@@ -899,6 +926,7 @@ namespace RPLidarDataViewerProject
         {
             public enum ZoneDistanceTypes
             {
+                Exclude,
                 Low,
                 Mid,
             }
@@ -1043,6 +1071,7 @@ namespace RPLidarDataViewerProject
             {
                 Pen zoneDrawPen = new Pen(Brushes.White, 2);
 
+                if (this.DistanceType == ZoneDistanceTypes.Exclude) zoneDrawPen.Brush = Brushes.Blue;
                 if (this.DistanceType == ZoneDistanceTypes.Low) zoneDrawPen.Brush = Brushes.Red;
                 if (this.DistanceType == ZoneDistanceTypes.Mid) zoneDrawPen.Brush = Brushes.Yellow;
 
@@ -1055,6 +1084,7 @@ namespace RPLidarDataViewerProject
             {
                 Pen zoneDrawPen = new Pen(Brushes.White, 2);
 
+                if (this.DistanceType == ZoneDistanceTypes.Exclude) zoneDrawPen.Brush = Brushes.Blue;
                 if (this.DistanceType == ZoneDistanceTypes.Low) zoneDrawPen.Brush = Brushes.Red;
                 if (this.DistanceType == ZoneDistanceTypes.Mid) zoneDrawPen.Brush = Brushes.Yellow;
 

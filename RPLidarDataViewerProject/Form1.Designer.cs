@@ -79,8 +79,6 @@
             this.labelLowZoneHeight_mm = new System.Windows.Forms.Label();
             this.labelLowZoneWidthOffset = new System.Windows.Forms.Label();
             this.groupBoxExcludeZoneSettings = new System.Windows.Forms.GroupBox();
-            this.groupBoxLidarDatas = new System.Windows.Forms.GroupBox();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.numericUpDownLidarExcludeZoneWidthOffset = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownLidarExcludeZoneWidth = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownLidarExcludeZoneHeightOffset = new System.Windows.Forms.NumericUpDown();
@@ -93,6 +91,8 @@
             this.labelExcludeZoneWidthOffset_mm = new System.Windows.Forms.Label();
             this.labelExcludeZoneHeight_mm = new System.Windows.Forms.Label();
             this.labelExcludeZoneWidthOffset = new System.Windows.Forms.Label();
+            this.groupBoxLidarDatas = new System.Windows.Forms.GroupBox();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxRPLidarDataViewer)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBoxLidarViewer.SuspendLayout();
@@ -107,11 +107,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarLowZoneHeightOffset)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarLowZoneHeight)).BeginInit();
             this.groupBoxExcludeZoneSettings.SuspendLayout();
-            this.groupBoxLidarDatas.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarExcludeZoneWidthOffset)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarExcludeZoneWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarExcludeZoneHeightOffset)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarExcludeZoneHeight)).BeginInit();
+            this.groupBoxLidarDatas.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonOpenFile
@@ -747,30 +747,6 @@
             this.groupBoxExcludeZoneSettings.TabStop = false;
             this.groupBoxExcludeZoneSettings.Text = "Exclude Zone Settings";
             // 
-            // groupBoxLidarDatas
-            // 
-            this.groupBoxLidarDatas.Controls.Add(this.label1);
-            this.groupBoxLidarDatas.Controls.Add(this.textBoxDataQualityThreshold);
-            this.groupBoxLidarDatas.Controls.Add(this.buttonOpenFile);
-            this.groupBoxLidarDatas.Controls.Add(this.textBoxOpenFile);
-            this.groupBoxLidarDatas.Controls.Add(this.labelLidarDataQuality);
-            this.groupBoxLidarDatas.Controls.Add(this.listBoxRPLidarDataQuality);
-            this.groupBoxLidarDatas.Controls.Add(this.labelLİdarDataStartBits);
-            this.groupBoxLidarDatas.Controls.Add(this.listBoxRPLidarStartBits);
-            this.groupBoxLidarDatas.Controls.Add(this.labelLidarData);
-            this.groupBoxLidarDatas.Controls.Add(this.listBoxRPLidarData);
-            this.groupBoxLidarDatas.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.groupBoxLidarDatas.Location = new System.Drawing.Point(1182, 311);
-            this.groupBoxLidarDatas.Name = "groupBoxLidarDatas";
-            this.groupBoxLidarDatas.Size = new System.Drawing.Size(490, 621);
-            this.groupBoxLidarDatas.TabIndex = 39;
-            this.groupBoxLidarDatas.TabStop = false;
-            this.groupBoxLidarDatas.Text = "Lidar Datas";
-            // 
-            // timer1
-            // 
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
             // numericUpDownLidarExcludeZoneWidthOffset
             // 
             this.numericUpDownLidarExcludeZoneWidthOffset.Increment = new decimal(new int[] {
@@ -792,6 +768,11 @@
             this.numericUpDownLidarExcludeZoneWidthOffset.Name = "numericUpDownLidarExcludeZoneWidthOffset";
             this.numericUpDownLidarExcludeZoneWidthOffset.Size = new System.Drawing.Size(60, 20);
             this.numericUpDownLidarExcludeZoneWidthOffset.TabIndex = 54;
+            this.numericUpDownLidarExcludeZoneWidthOffset.Value = new decimal(new int[] {
+            250,
+            0,
+            0,
+            -2147483648});
             // 
             // numericUpDownLidarExcludeZoneWidth
             // 
@@ -810,7 +791,7 @@
             this.numericUpDownLidarExcludeZoneWidth.Size = new System.Drawing.Size(60, 20);
             this.numericUpDownLidarExcludeZoneWidth.TabIndex = 53;
             this.numericUpDownLidarExcludeZoneWidth.Value = new decimal(new int[] {
-            1000,
+            500,
             0,
             0,
             0});
@@ -944,6 +925,30 @@
             this.labelExcludeZoneWidthOffset.TabIndex = 47;
             this.labelExcludeZoneWidthOffset.Text = "Zone Width Offset";
             // 
+            // groupBoxLidarDatas
+            // 
+            this.groupBoxLidarDatas.Controls.Add(this.label1);
+            this.groupBoxLidarDatas.Controls.Add(this.textBoxDataQualityThreshold);
+            this.groupBoxLidarDatas.Controls.Add(this.buttonOpenFile);
+            this.groupBoxLidarDatas.Controls.Add(this.textBoxOpenFile);
+            this.groupBoxLidarDatas.Controls.Add(this.labelLidarDataQuality);
+            this.groupBoxLidarDatas.Controls.Add(this.listBoxRPLidarDataQuality);
+            this.groupBoxLidarDatas.Controls.Add(this.labelLİdarDataStartBits);
+            this.groupBoxLidarDatas.Controls.Add(this.listBoxRPLidarStartBits);
+            this.groupBoxLidarDatas.Controls.Add(this.labelLidarData);
+            this.groupBoxLidarDatas.Controls.Add(this.listBoxRPLidarData);
+            this.groupBoxLidarDatas.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.groupBoxLidarDatas.Location = new System.Drawing.Point(1182, 311);
+            this.groupBoxLidarDatas.Name = "groupBoxLidarDatas";
+            this.groupBoxLidarDatas.Size = new System.Drawing.Size(490, 621);
+            this.groupBoxLidarDatas.TabIndex = 39;
+            this.groupBoxLidarDatas.TabStop = false;
+            this.groupBoxLidarDatas.Text = "Lidar Datas";
+            // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -973,12 +978,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarLowZoneHeight)).EndInit();
             this.groupBoxExcludeZoneSettings.ResumeLayout(false);
             this.groupBoxExcludeZoneSettings.PerformLayout();
-            this.groupBoxLidarDatas.ResumeLayout(false);
-            this.groupBoxLidarDatas.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarExcludeZoneWidthOffset)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarExcludeZoneWidth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarExcludeZoneHeightOffset)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarExcludeZoneHeight)).EndInit();
+            this.groupBoxLidarDatas.ResumeLayout(false);
+            this.groupBoxLidarDatas.PerformLayout();
             this.ResumeLayout(false);
 
         }
