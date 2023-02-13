@@ -119,10 +119,10 @@ namespace RPLidarDataViewerProject
             float MidDistanceThreshod = (float)Convert.ToUInt32(textBoxLidarMidDistance.Text);
 
             //Lidar Zone 'Width' , 'Height' ve offset  degerleri.
-            float lidarZoneHeight = (float)Convert.ToUInt32(numericUpDownLidarZoneHeight.Value);
-            float lidarZoneHeightOffset = (float)Convert.ToInt32(numericUpDownLidarZoneHeightOffset.Value);
-            float lidarZoneWidth = (float)Convert.ToUInt32(numericUpDownLidarZoneWidth.Value);
-            float lidarZoneWidthOffset = (float)Convert.ToInt32(numericUpDownLidarZoneWidthOffset.Value);
+            float lidarZoneHeight = (float)Convert.ToUInt32(numericUpDownLidarLowZoneHeight.Value);
+            float lidarZoneHeightOffset = (float)Convert.ToInt32(numericUpDownLidarLowZoneHeightOffset.Value);
+            float lidarZoneWidth = (float)Convert.ToUInt32(numericUpDownLidarLowZoneWidth.Value);
+            float lidarZoneWidthOffset = (float)Convert.ToInt32(numericUpDownLidarLowZoneWidthOffset.Value);
 
             float zoneCenterX = lidarZoneWidth / 2;
             float zoneCenterY = lidarZoneHeight / 2;
@@ -326,12 +326,12 @@ namespace RPLidarDataViewerProject
             Graphics pictureBoxGraphics = e.Graphics;
 
             //LidarZone data reading and zone creating.
-            Size zoneSize = new Size((int)Convert.ToUInt32(numericUpDownLidarZoneWidth.Value), (int)Convert.ToUInt32(numericUpDownLidarZoneHeight.Value));
-            Size zoneSizeOffset = new Size((int)Convert.ToInt32(numericUpDownLidarZoneWidthOffset.Value), (int)Convert.ToInt32(numericUpDownLidarZoneHeightOffset.Value));
+            Size zoneSize = new Size((int)Convert.ToUInt32(numericUpDownLidarLowZoneWidth.Value), (int)Convert.ToUInt32(numericUpDownLidarLowZoneHeight.Value));
+            Size zoneSizeOffset = new Size((int)Convert.ToInt32(numericUpDownLidarLowZoneWidthOffset.Value), (int)Convert.ToInt32(numericUpDownLidarLowZoneHeightOffset.Value));
             zones[0] = new LidarZone(LidarZone.ZoneDistanceTypes.Low, zoneSize, zoneSizeOffset);
 
-            Size zoneSize_2 = new Size((int)Convert.ToUInt32(numericUpDownLidarZoneWidth_2.Value), (int)Convert.ToUInt32(numericUpDownLidarZoneHeight_2.Value));
-            Size zoneSizeOffset_2 = new Size((int)Convert.ToInt32(numericUpDownLidarZoneWidthOffset_2.Value), (int)Convert.ToInt32(numericUpDownLidarZoneHeightOffset_2.Value));
+            Size zoneSize_2 = new Size((int)Convert.ToUInt32(numericUpDownLidarMidZoneWidth.Value), (int)Convert.ToUInt32(numericUpDownLidarMidZoneHeight.Value));
+            Size zoneSizeOffset_2 = new Size((int)Convert.ToInt32(numericUpDownLidarMidZoneWidthOffset.Value), (int)Convert.ToInt32(numericUpDownLidarMidZoneHeightOffset.Value));
             zones[1] = new LidarZone(LidarZone.ZoneDistanceTypes.Mid, zoneSize_2, zoneSizeOffset_2);
 
             //lidar sample data drawing

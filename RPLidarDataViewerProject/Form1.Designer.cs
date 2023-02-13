@@ -64,31 +64,31 @@
             this.groupBoxLidarViewer = new System.Windows.Forms.GroupBox();
             this.panelSpeedStatus = new System.Windows.Forms.Panel();
             this.groupBoxZoneSettings_2 = new System.Windows.Forms.GroupBox();
-            this.numericUpDownLidarZoneWidthOffset_2 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownLidarZoneWidth_2 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownLidarZoneHeightOffset_2 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownLidarZoneHeight_2 = new System.Windows.Forms.NumericUpDown();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
+            this.numericUpDownLidarMidZoneWidthOffset = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownLidarMidZoneWidth = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownLidarMidZoneHeightOffset = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownLidarMidZoneHeight = new System.Windows.Forms.NumericUpDown();
+            this.labelMidZoneHeight = new System.Windows.Forms.Label();
+            this.labelMidZoneWidth_mm = new System.Windows.Forms.Label();
+            this.labelMidZoneHeightOffset = new System.Windows.Forms.Label();
+            this.labelMidZoneWidth = new System.Windows.Forms.Label();
+            this.labelMidZoneHeightOffse_mm = new System.Windows.Forms.Label();
+            this.labelMidZoneWidthOffset_mm = new System.Windows.Forms.Label();
+            this.labelMidZoneHeight_mm = new System.Windows.Forms.Label();
+            this.labelMidZoneWidthOffset = new System.Windows.Forms.Label();
             this.groupBoxZoneSettings = new System.Windows.Forms.GroupBox();
-            this.numericUpDownLidarZoneWidthOffset = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownLidarZoneWidth = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownLidarZoneHeightOffset = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownLidarZoneHeight = new System.Windows.Forms.NumericUpDown();
-            this.labelZoneHeight = new System.Windows.Forms.Label();
-            this.labelZoneWidth_mm = new System.Windows.Forms.Label();
-            this.labelZoneHeightOffset = new System.Windows.Forms.Label();
-            this.labelZoneWidth = new System.Windows.Forms.Label();
-            this.labelZoneHeightOffse_mm = new System.Windows.Forms.Label();
-            this.labelZoneWidthOffset_mm = new System.Windows.Forms.Label();
-            this.labelZoneHeight_mm = new System.Windows.Forms.Label();
-            this.labelZoneWidthOffset = new System.Windows.Forms.Label();
+            this.numericUpDownLidarLowZoneWidthOffset = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownLidarLowZoneWidth = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownLidarLowZoneHeightOffset = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownLidarLowZoneHeight = new System.Windows.Forms.NumericUpDown();
+            this.labelLowZoneHeight = new System.Windows.Forms.Label();
+            this.labelLowZoneWidth_mm = new System.Windows.Forms.Label();
+            this.labelLowZoneHeightOffset = new System.Windows.Forms.Label();
+            this.labelLowZoneWidth = new System.Windows.Forms.Label();
+            this.labelLowZoneHeightOffse_mm = new System.Windows.Forms.Label();
+            this.labelLowZoneWidthOffset_mm = new System.Windows.Forms.Label();
+            this.labelLowZoneHeight_mm = new System.Windows.Forms.Label();
+            this.labelLowZoneWidthOffset = new System.Windows.Forms.Label();
             this.groupBoxDataSettings = new System.Windows.Forms.GroupBox();
             this.groupBoxLidarDatas = new System.Windows.Forms.GroupBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
@@ -96,15 +96,15 @@
             this.groupBox1.SuspendLayout();
             this.groupBoxLidarViewer.SuspendLayout();
             this.groupBoxZoneSettings_2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarZoneWidthOffset_2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarZoneWidth_2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarZoneHeightOffset_2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarZoneHeight_2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarMidZoneWidthOffset)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarMidZoneWidth)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarMidZoneHeightOffset)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarMidZoneHeight)).BeginInit();
             this.groupBoxZoneSettings.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarZoneWidthOffset)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarZoneWidth)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarZoneHeightOffset)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarZoneHeight)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarLowZoneWidthOffset)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarLowZoneWidth)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarLowZoneHeightOffset)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarLowZoneHeight)).BeginInit();
             this.groupBoxDataSettings.SuspendLayout();
             this.groupBoxLidarDatas.SuspendLayout();
             this.SuspendLayout();
@@ -442,393 +442,393 @@
             // 
             // groupBoxZoneSettings_2
             // 
-            this.groupBoxZoneSettings_2.Controls.Add(this.numericUpDownLidarZoneWidthOffset_2);
-            this.groupBoxZoneSettings_2.Controls.Add(this.numericUpDownLidarZoneWidth_2);
-            this.groupBoxZoneSettings_2.Controls.Add(this.numericUpDownLidarZoneHeightOffset_2);
-            this.groupBoxZoneSettings_2.Controls.Add(this.numericUpDownLidarZoneHeight_2);
-            this.groupBoxZoneSettings_2.Controls.Add(this.label2);
-            this.groupBoxZoneSettings_2.Controls.Add(this.label3);
-            this.groupBoxZoneSettings_2.Controls.Add(this.label4);
-            this.groupBoxZoneSettings_2.Controls.Add(this.label5);
-            this.groupBoxZoneSettings_2.Controls.Add(this.label6);
-            this.groupBoxZoneSettings_2.Controls.Add(this.label7);
-            this.groupBoxZoneSettings_2.Controls.Add(this.label8);
-            this.groupBoxZoneSettings_2.Controls.Add(this.label9);
+            this.groupBoxZoneSettings_2.Controls.Add(this.numericUpDownLidarMidZoneWidthOffset);
+            this.groupBoxZoneSettings_2.Controls.Add(this.numericUpDownLidarMidZoneWidth);
+            this.groupBoxZoneSettings_2.Controls.Add(this.numericUpDownLidarMidZoneHeightOffset);
+            this.groupBoxZoneSettings_2.Controls.Add(this.numericUpDownLidarMidZoneHeight);
+            this.groupBoxZoneSettings_2.Controls.Add(this.labelMidZoneHeight);
+            this.groupBoxZoneSettings_2.Controls.Add(this.labelMidZoneWidth_mm);
+            this.groupBoxZoneSettings_2.Controls.Add(this.labelMidZoneHeightOffset);
+            this.groupBoxZoneSettings_2.Controls.Add(this.labelMidZoneWidth);
+            this.groupBoxZoneSettings_2.Controls.Add(this.labelMidZoneHeightOffse_mm);
+            this.groupBoxZoneSettings_2.Controls.Add(this.labelMidZoneWidthOffset_mm);
+            this.groupBoxZoneSettings_2.Controls.Add(this.labelMidZoneHeight_mm);
+            this.groupBoxZoneSettings_2.Controls.Add(this.labelMidZoneWidthOffset);
             this.groupBoxZoneSettings_2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.groupBoxZoneSettings_2.Location = new System.Drawing.Point(915, 263);
             this.groupBoxZoneSettings_2.Name = "groupBoxZoneSettings_2";
             this.groupBoxZoneSettings_2.Size = new System.Drawing.Size(229, 119);
             this.groupBoxZoneSettings_2.TabIndex = 40;
             this.groupBoxZoneSettings_2.TabStop = false;
-            this.groupBoxZoneSettings_2.Text = "Zone Settings";
+            this.groupBoxZoneSettings_2.Text = "Mid Zone Settings";
             // 
-            // numericUpDownLidarZoneWidthOffset_2
+            // numericUpDownLidarMidZoneWidthOffset
             // 
-            this.numericUpDownLidarZoneWidthOffset_2.Increment = new decimal(new int[] {
+            this.numericUpDownLidarMidZoneWidthOffset.Increment = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.numericUpDownLidarZoneWidthOffset_2.Location = new System.Drawing.Point(129, 94);
-            this.numericUpDownLidarZoneWidthOffset_2.Maximum = new decimal(new int[] {
+            this.numericUpDownLidarMidZoneWidthOffset.Location = new System.Drawing.Point(129, 94);
+            this.numericUpDownLidarMidZoneWidthOffset.Maximum = new decimal(new int[] {
             6000,
             0,
             0,
             0});
-            this.numericUpDownLidarZoneWidthOffset_2.Minimum = new decimal(new int[] {
+            this.numericUpDownLidarMidZoneWidthOffset.Minimum = new decimal(new int[] {
             6000,
             0,
             0,
             -2147483648});
-            this.numericUpDownLidarZoneWidthOffset_2.Name = "numericUpDownLidarZoneWidthOffset_2";
-            this.numericUpDownLidarZoneWidthOffset_2.Size = new System.Drawing.Size(60, 20);
-            this.numericUpDownLidarZoneWidthOffset_2.TabIndex = 42;
+            this.numericUpDownLidarMidZoneWidthOffset.Name = "numericUpDownLidarMidZoneWidthOffset";
+            this.numericUpDownLidarMidZoneWidthOffset.Size = new System.Drawing.Size(60, 20);
+            this.numericUpDownLidarMidZoneWidthOffset.TabIndex = 42;
             // 
-            // numericUpDownLidarZoneWidth_2
+            // numericUpDownLidarMidZoneWidth
             // 
-            this.numericUpDownLidarZoneWidth_2.Increment = new decimal(new int[] {
+            this.numericUpDownLidarMidZoneWidth.Increment = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.numericUpDownLidarZoneWidth_2.Location = new System.Drawing.Point(129, 68);
-            this.numericUpDownLidarZoneWidth_2.Maximum = new decimal(new int[] {
+            this.numericUpDownLidarMidZoneWidth.Location = new System.Drawing.Point(129, 68);
+            this.numericUpDownLidarMidZoneWidth.Maximum = new decimal(new int[] {
             12000,
             0,
             0,
             0});
-            this.numericUpDownLidarZoneWidth_2.Name = "numericUpDownLidarZoneWidth_2";
-            this.numericUpDownLidarZoneWidth_2.Size = new System.Drawing.Size(60, 20);
-            this.numericUpDownLidarZoneWidth_2.TabIndex = 41;
-            this.numericUpDownLidarZoneWidth_2.Value = new decimal(new int[] {
+            this.numericUpDownLidarMidZoneWidth.Name = "numericUpDownLidarMidZoneWidth";
+            this.numericUpDownLidarMidZoneWidth.Size = new System.Drawing.Size(60, 20);
+            this.numericUpDownLidarMidZoneWidth.TabIndex = 41;
+            this.numericUpDownLidarMidZoneWidth.Value = new decimal(new int[] {
             1000,
             0,
             0,
             0});
             // 
-            // numericUpDownLidarZoneHeightOffset_2
+            // numericUpDownLidarMidZoneHeightOffset
             // 
-            this.numericUpDownLidarZoneHeightOffset_2.Increment = new decimal(new int[] {
+            this.numericUpDownLidarMidZoneHeightOffset.Increment = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.numericUpDownLidarZoneHeightOffset_2.Location = new System.Drawing.Point(129, 42);
-            this.numericUpDownLidarZoneHeightOffset_2.Maximum = new decimal(new int[] {
+            this.numericUpDownLidarMidZoneHeightOffset.Location = new System.Drawing.Point(129, 42);
+            this.numericUpDownLidarMidZoneHeightOffset.Maximum = new decimal(new int[] {
             6000,
             0,
             0,
             0});
-            this.numericUpDownLidarZoneHeightOffset_2.Minimum = new decimal(new int[] {
+            this.numericUpDownLidarMidZoneHeightOffset.Minimum = new decimal(new int[] {
             6000,
             0,
             0,
             -2147483648});
-            this.numericUpDownLidarZoneHeightOffset_2.Name = "numericUpDownLidarZoneHeightOffset_2";
-            this.numericUpDownLidarZoneHeightOffset_2.Size = new System.Drawing.Size(60, 20);
-            this.numericUpDownLidarZoneHeightOffset_2.TabIndex = 40;
-            this.numericUpDownLidarZoneHeightOffset_2.Value = new decimal(new int[] {
+            this.numericUpDownLidarMidZoneHeightOffset.Name = "numericUpDownLidarMidZoneHeightOffset";
+            this.numericUpDownLidarMidZoneHeightOffset.Size = new System.Drawing.Size(60, 20);
+            this.numericUpDownLidarMidZoneHeightOffset.TabIndex = 40;
+            this.numericUpDownLidarMidZoneHeightOffset.Value = new decimal(new int[] {
             1250,
             0,
             0,
             0});
             // 
-            // numericUpDownLidarZoneHeight_2
+            // numericUpDownLidarMidZoneHeight
             // 
-            this.numericUpDownLidarZoneHeight_2.Increment = new decimal(new int[] {
+            this.numericUpDownLidarMidZoneHeight.Increment = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.numericUpDownLidarZoneHeight_2.Location = new System.Drawing.Point(129, 16);
-            this.numericUpDownLidarZoneHeight_2.Maximum = new decimal(new int[] {
+            this.numericUpDownLidarMidZoneHeight.Location = new System.Drawing.Point(129, 16);
+            this.numericUpDownLidarMidZoneHeight.Maximum = new decimal(new int[] {
             12000,
             0,
             0,
             0});
-            this.numericUpDownLidarZoneHeight_2.Name = "numericUpDownLidarZoneHeight_2";
-            this.numericUpDownLidarZoneHeight_2.Size = new System.Drawing.Size(60, 20);
-            this.numericUpDownLidarZoneHeight_2.TabIndex = 39;
-            this.numericUpDownLidarZoneHeight_2.Value = new decimal(new int[] {
+            this.numericUpDownLidarMidZoneHeight.Name = "numericUpDownLidarMidZoneHeight";
+            this.numericUpDownLidarMidZoneHeight.Size = new System.Drawing.Size(60, 20);
+            this.numericUpDownLidarMidZoneHeight.TabIndex = 39;
+            this.numericUpDownLidarMidZoneHeight.Value = new decimal(new int[] {
             1000,
             0,
             0,
             0});
             // 
-            // label2
+            // labelMidZoneHeight
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label2.Location = new System.Drawing.Point(43, 17);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(80, 16);
-            this.label2.TabIndex = 23;
-            this.label2.Text = "Zone Height";
+            this.labelMidZoneHeight.AutoSize = true;
+            this.labelMidZoneHeight.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.labelMidZoneHeight.Location = new System.Drawing.Point(43, 17);
+            this.labelMidZoneHeight.Name = "labelMidZoneHeight";
+            this.labelMidZoneHeight.Size = new System.Drawing.Size(80, 16);
+            this.labelMidZoneHeight.TabIndex = 23;
+            this.labelMidZoneHeight.Text = "Zone Height";
             // 
-            // label3
+            // labelMidZoneWidth_mm
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label3.Location = new System.Drawing.Point(195, 69);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(29, 16);
-            this.label3.TabIndex = 36;
-            this.label3.Text = "mm";
+            this.labelMidZoneWidth_mm.AutoSize = true;
+            this.labelMidZoneWidth_mm.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.labelMidZoneWidth_mm.Location = new System.Drawing.Point(195, 69);
+            this.labelMidZoneWidth_mm.Name = "labelMidZoneWidth_mm";
+            this.labelMidZoneWidth_mm.Size = new System.Drawing.Size(29, 16);
+            this.labelMidZoneWidth_mm.TabIndex = 36;
+            this.labelMidZoneWidth_mm.Text = "mm";
             // 
-            // label4
+            // labelMidZoneHeightOffset
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label4.Location = new System.Drawing.Point(6, 43);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(117, 16);
-            this.label4.TabIndex = 20;
-            this.label4.Text = "Zone Height Offset";
+            this.labelMidZoneHeightOffset.AutoSize = true;
+            this.labelMidZoneHeightOffset.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.labelMidZoneHeightOffset.Location = new System.Drawing.Point(6, 43);
+            this.labelMidZoneHeightOffset.Name = "labelMidZoneHeightOffset";
+            this.labelMidZoneHeightOffset.Size = new System.Drawing.Size(117, 16);
+            this.labelMidZoneHeightOffset.TabIndex = 20;
+            this.labelMidZoneHeightOffset.Text = "Zone Height Offset";
             // 
-            // label5
+            // labelMidZoneWidth
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label5.Location = new System.Drawing.Point(48, 69);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(75, 16);
-            this.label5.TabIndex = 35;
-            this.label5.Text = "Zone Width";
+            this.labelMidZoneWidth.AutoSize = true;
+            this.labelMidZoneWidth.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.labelMidZoneWidth.Location = new System.Drawing.Point(48, 69);
+            this.labelMidZoneWidth.Name = "labelMidZoneWidth";
+            this.labelMidZoneWidth.Size = new System.Drawing.Size(75, 16);
+            this.labelMidZoneWidth.TabIndex = 35;
+            this.labelMidZoneWidth.Text = "Zone Width";
             // 
-            // label6
+            // labelMidZoneHeightOffse_mm
             // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label6.Location = new System.Drawing.Point(195, 43);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(29, 16);
-            this.label6.TabIndex = 21;
-            this.label6.Text = "mm";
+            this.labelMidZoneHeightOffse_mm.AutoSize = true;
+            this.labelMidZoneHeightOffse_mm.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.labelMidZoneHeightOffse_mm.Location = new System.Drawing.Point(195, 43);
+            this.labelMidZoneHeightOffse_mm.Name = "labelMidZoneHeightOffse_mm";
+            this.labelMidZoneHeightOffse_mm.Size = new System.Drawing.Size(29, 16);
+            this.labelMidZoneHeightOffse_mm.TabIndex = 21;
+            this.labelMidZoneHeightOffse_mm.Text = "mm";
             // 
-            // label7
+            // labelMidZoneWidthOffset_mm
             // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label7.Location = new System.Drawing.Point(195, 95);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(29, 16);
-            this.label7.TabIndex = 33;
-            this.label7.Text = "mm";
+            this.labelMidZoneWidthOffset_mm.AutoSize = true;
+            this.labelMidZoneWidthOffset_mm.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.labelMidZoneWidthOffset_mm.Location = new System.Drawing.Point(195, 95);
+            this.labelMidZoneWidthOffset_mm.Name = "labelMidZoneWidthOffset_mm";
+            this.labelMidZoneWidthOffset_mm.Size = new System.Drawing.Size(29, 16);
+            this.labelMidZoneWidthOffset_mm.TabIndex = 33;
+            this.labelMidZoneWidthOffset_mm.Text = "mm";
             // 
-            // label8
+            // labelMidZoneHeight_mm
             // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label8.Location = new System.Drawing.Point(195, 17);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(29, 16);
-            this.label8.TabIndex = 24;
-            this.label8.Text = "mm";
+            this.labelMidZoneHeight_mm.AutoSize = true;
+            this.labelMidZoneHeight_mm.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.labelMidZoneHeight_mm.Location = new System.Drawing.Point(195, 17);
+            this.labelMidZoneHeight_mm.Name = "labelMidZoneHeight_mm";
+            this.labelMidZoneHeight_mm.Size = new System.Drawing.Size(29, 16);
+            this.labelMidZoneHeight_mm.TabIndex = 24;
+            this.labelMidZoneHeight_mm.Text = "mm";
             // 
-            // label9
+            // labelMidZoneWidthOffset
             // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label9.Location = new System.Drawing.Point(11, 95);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(112, 16);
-            this.label9.TabIndex = 32;
-            this.label9.Text = "Zone Width Offset";
+            this.labelMidZoneWidthOffset.AutoSize = true;
+            this.labelMidZoneWidthOffset.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.labelMidZoneWidthOffset.Location = new System.Drawing.Point(11, 95);
+            this.labelMidZoneWidthOffset.Name = "labelMidZoneWidthOffset";
+            this.labelMidZoneWidthOffset.Size = new System.Drawing.Size(112, 16);
+            this.labelMidZoneWidthOffset.TabIndex = 32;
+            this.labelMidZoneWidthOffset.Text = "Zone Width Offset";
             // 
             // groupBoxZoneSettings
             // 
-            this.groupBoxZoneSettings.Controls.Add(this.numericUpDownLidarZoneWidthOffset);
-            this.groupBoxZoneSettings.Controls.Add(this.numericUpDownLidarZoneWidth);
-            this.groupBoxZoneSettings.Controls.Add(this.numericUpDownLidarZoneHeightOffset);
-            this.groupBoxZoneSettings.Controls.Add(this.numericUpDownLidarZoneHeight);
-            this.groupBoxZoneSettings.Controls.Add(this.labelZoneHeight);
-            this.groupBoxZoneSettings.Controls.Add(this.labelZoneWidth_mm);
-            this.groupBoxZoneSettings.Controls.Add(this.labelZoneHeightOffset);
-            this.groupBoxZoneSettings.Controls.Add(this.labelZoneWidth);
-            this.groupBoxZoneSettings.Controls.Add(this.labelZoneHeightOffse_mm);
-            this.groupBoxZoneSettings.Controls.Add(this.labelZoneWidthOffset_mm);
-            this.groupBoxZoneSettings.Controls.Add(this.labelZoneHeight_mm);
-            this.groupBoxZoneSettings.Controls.Add(this.labelZoneWidthOffset);
+            this.groupBoxZoneSettings.Controls.Add(this.numericUpDownLidarLowZoneWidthOffset);
+            this.groupBoxZoneSettings.Controls.Add(this.numericUpDownLidarLowZoneWidth);
+            this.groupBoxZoneSettings.Controls.Add(this.numericUpDownLidarLowZoneHeightOffset);
+            this.groupBoxZoneSettings.Controls.Add(this.numericUpDownLidarLowZoneHeight);
+            this.groupBoxZoneSettings.Controls.Add(this.labelLowZoneHeight);
+            this.groupBoxZoneSettings.Controls.Add(this.labelLowZoneWidth_mm);
+            this.groupBoxZoneSettings.Controls.Add(this.labelLowZoneHeightOffset);
+            this.groupBoxZoneSettings.Controls.Add(this.labelLowZoneWidth);
+            this.groupBoxZoneSettings.Controls.Add(this.labelLowZoneHeightOffse_mm);
+            this.groupBoxZoneSettings.Controls.Add(this.labelLowZoneWidthOffset_mm);
+            this.groupBoxZoneSettings.Controls.Add(this.labelLowZoneHeight_mm);
+            this.groupBoxZoneSettings.Controls.Add(this.labelLowZoneWidthOffset);
             this.groupBoxZoneSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.groupBoxZoneSettings.Location = new System.Drawing.Point(915, 138);
             this.groupBoxZoneSettings.Name = "groupBoxZoneSettings";
             this.groupBoxZoneSettings.Size = new System.Drawing.Size(229, 119);
             this.groupBoxZoneSettings.TabIndex = 39;
             this.groupBoxZoneSettings.TabStop = false;
-            this.groupBoxZoneSettings.Text = "Zone Settings";
+            this.groupBoxZoneSettings.Text = "Low Zone Settings";
             // 
-            // numericUpDownLidarZoneWidthOffset
+            // numericUpDownLidarLowZoneWidthOffset
             // 
-            this.numericUpDownLidarZoneWidthOffset.Increment = new decimal(new int[] {
+            this.numericUpDownLidarLowZoneWidthOffset.Increment = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.numericUpDownLidarZoneWidthOffset.Location = new System.Drawing.Point(129, 94);
-            this.numericUpDownLidarZoneWidthOffset.Maximum = new decimal(new int[] {
+            this.numericUpDownLidarLowZoneWidthOffset.Location = new System.Drawing.Point(129, 94);
+            this.numericUpDownLidarLowZoneWidthOffset.Maximum = new decimal(new int[] {
             6000,
             0,
             0,
             0});
-            this.numericUpDownLidarZoneWidthOffset.Minimum = new decimal(new int[] {
+            this.numericUpDownLidarLowZoneWidthOffset.Minimum = new decimal(new int[] {
             6000,
             0,
             0,
             -2147483648});
-            this.numericUpDownLidarZoneWidthOffset.Name = "numericUpDownLidarZoneWidthOffset";
-            this.numericUpDownLidarZoneWidthOffset.Size = new System.Drawing.Size(60, 20);
-            this.numericUpDownLidarZoneWidthOffset.TabIndex = 42;
+            this.numericUpDownLidarLowZoneWidthOffset.Name = "numericUpDownLidarLowZoneWidthOffset";
+            this.numericUpDownLidarLowZoneWidthOffset.Size = new System.Drawing.Size(60, 20);
+            this.numericUpDownLidarLowZoneWidthOffset.TabIndex = 42;
             // 
-            // numericUpDownLidarZoneWidth
+            // numericUpDownLidarLowZoneWidth
             // 
-            this.numericUpDownLidarZoneWidth.Increment = new decimal(new int[] {
+            this.numericUpDownLidarLowZoneWidth.Increment = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.numericUpDownLidarZoneWidth.Location = new System.Drawing.Point(129, 68);
-            this.numericUpDownLidarZoneWidth.Maximum = new decimal(new int[] {
+            this.numericUpDownLidarLowZoneWidth.Location = new System.Drawing.Point(129, 68);
+            this.numericUpDownLidarLowZoneWidth.Maximum = new decimal(new int[] {
             12000,
             0,
             0,
             0});
-            this.numericUpDownLidarZoneWidth.Name = "numericUpDownLidarZoneWidth";
-            this.numericUpDownLidarZoneWidth.Size = new System.Drawing.Size(60, 20);
-            this.numericUpDownLidarZoneWidth.TabIndex = 41;
-            this.numericUpDownLidarZoneWidth.Value = new decimal(new int[] {
+            this.numericUpDownLidarLowZoneWidth.Name = "numericUpDownLidarLowZoneWidth";
+            this.numericUpDownLidarLowZoneWidth.Size = new System.Drawing.Size(60, 20);
+            this.numericUpDownLidarLowZoneWidth.TabIndex = 41;
+            this.numericUpDownLidarLowZoneWidth.Value = new decimal(new int[] {
             1000,
             0,
             0,
             0});
             // 
-            // numericUpDownLidarZoneHeightOffset
+            // numericUpDownLidarLowZoneHeightOffset
             // 
-            this.numericUpDownLidarZoneHeightOffset.Increment = new decimal(new int[] {
+            this.numericUpDownLidarLowZoneHeightOffset.Increment = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.numericUpDownLidarZoneHeightOffset.Location = new System.Drawing.Point(129, 42);
-            this.numericUpDownLidarZoneHeightOffset.Maximum = new decimal(new int[] {
+            this.numericUpDownLidarLowZoneHeightOffset.Location = new System.Drawing.Point(129, 42);
+            this.numericUpDownLidarLowZoneHeightOffset.Maximum = new decimal(new int[] {
             6000,
             0,
             0,
             0});
-            this.numericUpDownLidarZoneHeightOffset.Minimum = new decimal(new int[] {
+            this.numericUpDownLidarLowZoneHeightOffset.Minimum = new decimal(new int[] {
             6000,
             0,
             0,
             -2147483648});
-            this.numericUpDownLidarZoneHeightOffset.Name = "numericUpDownLidarZoneHeightOffset";
-            this.numericUpDownLidarZoneHeightOffset.Size = new System.Drawing.Size(60, 20);
-            this.numericUpDownLidarZoneHeightOffset.TabIndex = 40;
-            this.numericUpDownLidarZoneHeightOffset.Value = new decimal(new int[] {
+            this.numericUpDownLidarLowZoneHeightOffset.Name = "numericUpDownLidarLowZoneHeightOffset";
+            this.numericUpDownLidarLowZoneHeightOffset.Size = new System.Drawing.Size(60, 20);
+            this.numericUpDownLidarLowZoneHeightOffset.TabIndex = 40;
+            this.numericUpDownLidarLowZoneHeightOffset.Value = new decimal(new int[] {
             500,
             0,
             0,
             0});
             // 
-            // numericUpDownLidarZoneHeight
+            // numericUpDownLidarLowZoneHeight
             // 
-            this.numericUpDownLidarZoneHeight.Increment = new decimal(new int[] {
+            this.numericUpDownLidarLowZoneHeight.Increment = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.numericUpDownLidarZoneHeight.Location = new System.Drawing.Point(129, 16);
-            this.numericUpDownLidarZoneHeight.Maximum = new decimal(new int[] {
+            this.numericUpDownLidarLowZoneHeight.Location = new System.Drawing.Point(129, 16);
+            this.numericUpDownLidarLowZoneHeight.Maximum = new decimal(new int[] {
             12000,
             0,
             0,
             0});
-            this.numericUpDownLidarZoneHeight.Name = "numericUpDownLidarZoneHeight";
-            this.numericUpDownLidarZoneHeight.Size = new System.Drawing.Size(60, 20);
-            this.numericUpDownLidarZoneHeight.TabIndex = 39;
-            this.numericUpDownLidarZoneHeight.Value = new decimal(new int[] {
+            this.numericUpDownLidarLowZoneHeight.Name = "numericUpDownLidarLowZoneHeight";
+            this.numericUpDownLidarLowZoneHeight.Size = new System.Drawing.Size(60, 20);
+            this.numericUpDownLidarLowZoneHeight.TabIndex = 39;
+            this.numericUpDownLidarLowZoneHeight.Value = new decimal(new int[] {
             500,
             0,
             0,
             0});
             // 
-            // labelZoneHeight
+            // labelLowZoneHeight
             // 
-            this.labelZoneHeight.AutoSize = true;
-            this.labelZoneHeight.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.labelZoneHeight.Location = new System.Drawing.Point(43, 17);
-            this.labelZoneHeight.Name = "labelZoneHeight";
-            this.labelZoneHeight.Size = new System.Drawing.Size(80, 16);
-            this.labelZoneHeight.TabIndex = 23;
-            this.labelZoneHeight.Text = "Zone Height";
+            this.labelLowZoneHeight.AutoSize = true;
+            this.labelLowZoneHeight.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.labelLowZoneHeight.Location = new System.Drawing.Point(43, 17);
+            this.labelLowZoneHeight.Name = "labelLowZoneHeight";
+            this.labelLowZoneHeight.Size = new System.Drawing.Size(80, 16);
+            this.labelLowZoneHeight.TabIndex = 23;
+            this.labelLowZoneHeight.Text = "Zone Height";
             // 
-            // labelZoneWidth_mm
+            // labelLowZoneWidth_mm
             // 
-            this.labelZoneWidth_mm.AutoSize = true;
-            this.labelZoneWidth_mm.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.labelZoneWidth_mm.Location = new System.Drawing.Point(195, 69);
-            this.labelZoneWidth_mm.Name = "labelZoneWidth_mm";
-            this.labelZoneWidth_mm.Size = new System.Drawing.Size(29, 16);
-            this.labelZoneWidth_mm.TabIndex = 36;
-            this.labelZoneWidth_mm.Text = "mm";
+            this.labelLowZoneWidth_mm.AutoSize = true;
+            this.labelLowZoneWidth_mm.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.labelLowZoneWidth_mm.Location = new System.Drawing.Point(195, 69);
+            this.labelLowZoneWidth_mm.Name = "labelLowZoneWidth_mm";
+            this.labelLowZoneWidth_mm.Size = new System.Drawing.Size(29, 16);
+            this.labelLowZoneWidth_mm.TabIndex = 36;
+            this.labelLowZoneWidth_mm.Text = "mm";
             // 
-            // labelZoneHeightOffset
+            // labelLowZoneHeightOffset
             // 
-            this.labelZoneHeightOffset.AutoSize = true;
-            this.labelZoneHeightOffset.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.labelZoneHeightOffset.Location = new System.Drawing.Point(6, 43);
-            this.labelZoneHeightOffset.Name = "labelZoneHeightOffset";
-            this.labelZoneHeightOffset.Size = new System.Drawing.Size(117, 16);
-            this.labelZoneHeightOffset.TabIndex = 20;
-            this.labelZoneHeightOffset.Text = "Zone Height Offset";
+            this.labelLowZoneHeightOffset.AutoSize = true;
+            this.labelLowZoneHeightOffset.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.labelLowZoneHeightOffset.Location = new System.Drawing.Point(6, 43);
+            this.labelLowZoneHeightOffset.Name = "labelLowZoneHeightOffset";
+            this.labelLowZoneHeightOffset.Size = new System.Drawing.Size(117, 16);
+            this.labelLowZoneHeightOffset.TabIndex = 20;
+            this.labelLowZoneHeightOffset.Text = "Zone Height Offset";
             // 
-            // labelZoneWidth
+            // labelLowZoneWidth
             // 
-            this.labelZoneWidth.AutoSize = true;
-            this.labelZoneWidth.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.labelZoneWidth.Location = new System.Drawing.Point(48, 69);
-            this.labelZoneWidth.Name = "labelZoneWidth";
-            this.labelZoneWidth.Size = new System.Drawing.Size(75, 16);
-            this.labelZoneWidth.TabIndex = 35;
-            this.labelZoneWidth.Text = "Zone Width";
+            this.labelLowZoneWidth.AutoSize = true;
+            this.labelLowZoneWidth.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.labelLowZoneWidth.Location = new System.Drawing.Point(48, 69);
+            this.labelLowZoneWidth.Name = "labelLowZoneWidth";
+            this.labelLowZoneWidth.Size = new System.Drawing.Size(75, 16);
+            this.labelLowZoneWidth.TabIndex = 35;
+            this.labelLowZoneWidth.Text = "Zone Width";
             // 
-            // labelZoneHeightOffse_mm
+            // labelLowZoneHeightOffse_mm
             // 
-            this.labelZoneHeightOffse_mm.AutoSize = true;
-            this.labelZoneHeightOffse_mm.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.labelZoneHeightOffse_mm.Location = new System.Drawing.Point(195, 43);
-            this.labelZoneHeightOffse_mm.Name = "labelZoneHeightOffse_mm";
-            this.labelZoneHeightOffse_mm.Size = new System.Drawing.Size(29, 16);
-            this.labelZoneHeightOffse_mm.TabIndex = 21;
-            this.labelZoneHeightOffse_mm.Text = "mm";
+            this.labelLowZoneHeightOffse_mm.AutoSize = true;
+            this.labelLowZoneHeightOffse_mm.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.labelLowZoneHeightOffse_mm.Location = new System.Drawing.Point(195, 43);
+            this.labelLowZoneHeightOffse_mm.Name = "labelLowZoneHeightOffse_mm";
+            this.labelLowZoneHeightOffse_mm.Size = new System.Drawing.Size(29, 16);
+            this.labelLowZoneHeightOffse_mm.TabIndex = 21;
+            this.labelLowZoneHeightOffse_mm.Text = "mm";
             // 
-            // labelZoneWidthOffset_mm
+            // labelLowZoneWidthOffset_mm
             // 
-            this.labelZoneWidthOffset_mm.AutoSize = true;
-            this.labelZoneWidthOffset_mm.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.labelZoneWidthOffset_mm.Location = new System.Drawing.Point(195, 95);
-            this.labelZoneWidthOffset_mm.Name = "labelZoneWidthOffset_mm";
-            this.labelZoneWidthOffset_mm.Size = new System.Drawing.Size(29, 16);
-            this.labelZoneWidthOffset_mm.TabIndex = 33;
-            this.labelZoneWidthOffset_mm.Text = "mm";
+            this.labelLowZoneWidthOffset_mm.AutoSize = true;
+            this.labelLowZoneWidthOffset_mm.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.labelLowZoneWidthOffset_mm.Location = new System.Drawing.Point(195, 95);
+            this.labelLowZoneWidthOffset_mm.Name = "labelLowZoneWidthOffset_mm";
+            this.labelLowZoneWidthOffset_mm.Size = new System.Drawing.Size(29, 16);
+            this.labelLowZoneWidthOffset_mm.TabIndex = 33;
+            this.labelLowZoneWidthOffset_mm.Text = "mm";
             // 
-            // labelZoneHeight_mm
+            // labelLowZoneHeight_mm
             // 
-            this.labelZoneHeight_mm.AutoSize = true;
-            this.labelZoneHeight_mm.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.labelZoneHeight_mm.Location = new System.Drawing.Point(195, 17);
-            this.labelZoneHeight_mm.Name = "labelZoneHeight_mm";
-            this.labelZoneHeight_mm.Size = new System.Drawing.Size(29, 16);
-            this.labelZoneHeight_mm.TabIndex = 24;
-            this.labelZoneHeight_mm.Text = "mm";
+            this.labelLowZoneHeight_mm.AutoSize = true;
+            this.labelLowZoneHeight_mm.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.labelLowZoneHeight_mm.Location = new System.Drawing.Point(195, 17);
+            this.labelLowZoneHeight_mm.Name = "labelLowZoneHeight_mm";
+            this.labelLowZoneHeight_mm.Size = new System.Drawing.Size(29, 16);
+            this.labelLowZoneHeight_mm.TabIndex = 24;
+            this.labelLowZoneHeight_mm.Text = "mm";
             // 
-            // labelZoneWidthOffset
+            // labelLowZoneWidthOffset
             // 
-            this.labelZoneWidthOffset.AutoSize = true;
-            this.labelZoneWidthOffset.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.labelZoneWidthOffset.Location = new System.Drawing.Point(11, 95);
-            this.labelZoneWidthOffset.Name = "labelZoneWidthOffset";
-            this.labelZoneWidthOffset.Size = new System.Drawing.Size(112, 16);
-            this.labelZoneWidthOffset.TabIndex = 32;
-            this.labelZoneWidthOffset.Text = "Zone Width Offset";
+            this.labelLowZoneWidthOffset.AutoSize = true;
+            this.labelLowZoneWidthOffset.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.labelLowZoneWidthOffset.Location = new System.Drawing.Point(11, 95);
+            this.labelLowZoneWidthOffset.Name = "labelLowZoneWidthOffset";
+            this.labelLowZoneWidthOffset.Size = new System.Drawing.Size(112, 16);
+            this.labelLowZoneWidthOffset.TabIndex = 32;
+            this.labelLowZoneWidthOffset.Text = "Zone Width Offset";
             // 
             // groupBoxDataSettings
             // 
@@ -892,16 +892,16 @@
             this.groupBoxLidarViewer.ResumeLayout(false);
             this.groupBoxZoneSettings_2.ResumeLayout(false);
             this.groupBoxZoneSettings_2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarZoneWidthOffset_2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarZoneWidth_2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarZoneHeightOffset_2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarZoneHeight_2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarMidZoneWidthOffset)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarMidZoneWidth)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarMidZoneHeightOffset)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarMidZoneHeight)).EndInit();
             this.groupBoxZoneSettings.ResumeLayout(false);
             this.groupBoxZoneSettings.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarZoneWidthOffset)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarZoneWidth)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarZoneHeightOffset)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarZoneHeight)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarLowZoneWidthOffset)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarLowZoneWidth)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarLowZoneHeightOffset)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLidarLowZoneHeight)).EndInit();
             this.groupBoxDataSettings.ResumeLayout(false);
             this.groupBoxDataSettings.PerformLayout();
             this.groupBoxLidarDatas.ResumeLayout(false);
@@ -947,31 +947,31 @@
         private System.Windows.Forms.GroupBox groupBoxLidarDatas;
         private System.Windows.Forms.GroupBox groupBoxDataSettings;
         private System.Windows.Forms.GroupBox groupBoxZoneSettings;
-        private System.Windows.Forms.NumericUpDown numericUpDownLidarZoneWidthOffset;
-        private System.Windows.Forms.NumericUpDown numericUpDownLidarZoneWidth;
-        private System.Windows.Forms.NumericUpDown numericUpDownLidarZoneHeightOffset;
-        private System.Windows.Forms.NumericUpDown numericUpDownLidarZoneHeight;
-        private System.Windows.Forms.Label labelZoneHeight;
-        private System.Windows.Forms.Label labelZoneWidth_mm;
-        private System.Windows.Forms.Label labelZoneHeightOffset;
-        private System.Windows.Forms.Label labelZoneWidth;
-        private System.Windows.Forms.Label labelZoneHeightOffse_mm;
-        private System.Windows.Forms.Label labelZoneWidthOffset_mm;
-        private System.Windows.Forms.Label labelZoneHeight_mm;
-        private System.Windows.Forms.Label labelZoneWidthOffset;
+        private System.Windows.Forms.NumericUpDown numericUpDownLidarLowZoneWidthOffset;
+        private System.Windows.Forms.NumericUpDown numericUpDownLidarLowZoneWidth;
+        private System.Windows.Forms.NumericUpDown numericUpDownLidarLowZoneHeightOffset;
+        private System.Windows.Forms.NumericUpDown numericUpDownLidarLowZoneHeight;
+        private System.Windows.Forms.Label labelLowZoneHeight;
+        private System.Windows.Forms.Label labelLowZoneWidth_mm;
+        private System.Windows.Forms.Label labelLowZoneHeightOffset;
+        private System.Windows.Forms.Label labelLowZoneWidth;
+        private System.Windows.Forms.Label labelLowZoneHeightOffse_mm;
+        private System.Windows.Forms.Label labelLowZoneWidthOffset_mm;
+        private System.Windows.Forms.Label labelLowZoneHeight_mm;
+        private System.Windows.Forms.Label labelLowZoneWidthOffset;
         private System.Windows.Forms.GroupBox groupBoxZoneSettings_2;
-        private System.Windows.Forms.NumericUpDown numericUpDownLidarZoneWidthOffset_2;
-        private System.Windows.Forms.NumericUpDown numericUpDownLidarZoneWidth_2;
-        private System.Windows.Forms.NumericUpDown numericUpDownLidarZoneHeightOffset_2;
-        private System.Windows.Forms.NumericUpDown numericUpDownLidarZoneHeight_2;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.NumericUpDown numericUpDownLidarMidZoneWidthOffset;
+        private System.Windows.Forms.NumericUpDown numericUpDownLidarMidZoneWidth;
+        private System.Windows.Forms.NumericUpDown numericUpDownLidarMidZoneHeightOffset;
+        private System.Windows.Forms.NumericUpDown numericUpDownLidarMidZoneHeight;
+        private System.Windows.Forms.Label labelMidZoneHeight;
+        private System.Windows.Forms.Label labelMidZoneWidth_mm;
+        private System.Windows.Forms.Label labelMidZoneHeightOffset;
+        private System.Windows.Forms.Label labelMidZoneWidth;
+        private System.Windows.Forms.Label labelMidZoneHeightOffse_mm;
+        private System.Windows.Forms.Label labelMidZoneWidthOffset_mm;
+        private System.Windows.Forms.Label labelMidZoneHeight_mm;
+        private System.Windows.Forms.Label labelMidZoneWidthOffset;
         private System.Windows.Forms.Panel panelSpeedStatus;
         private System.Windows.Forms.Timer timer1;
     }
