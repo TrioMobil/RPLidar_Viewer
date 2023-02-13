@@ -110,13 +110,8 @@ namespace RPLidarDataViewerProject
             listBoxRPLidarStartBits.Items.Clear();
             listBoxRPLidarDataQuality.Items.Clear();
 
-            //Lidar data viewer.
-            float distanceThreshod = (float)Convert.ToUInt32(textBoxViewLidarDistance.Text);
+            //Lidar data quality threshold.
             float qualityThreshold = (float)Convert.ToUInt32(textBoxDataQualityThreshold.Text);
-
-            //Lidar data viewer Mid ve Low degerleri.
-            float LowDistanceThreshod = (float)Convert.ToUInt32(textBoxLidarLowDistance.Text);
-            float MidDistanceThreshod = (float)Convert.ToUInt32(textBoxLidarMidDistance.Text);
 
             //Lidar Zone 'Width' , 'Height' ve offset  degerleri.
             float lidarZoneHeight = (float)Convert.ToUInt32(numericUpDownLidarLowZoneHeight.Value);
@@ -167,14 +162,14 @@ namespace RPLidarDataViewerProject
                 //detectionZoneFlag = checkTheLidarDetectionZone((float)tempAngle, (float)tempDistance, lidarZoneMin_X, lidarZoneMax_X, lidarZoneMin_Y, lidarZoneMax_Y);
 
                 /*//lidar datası grafiğe çizdiriliyor.
-                if ( (tempDistance <= distanceThreshod) && (tempQuality >= qualityThreshold) )
+                if (tempQuality >= qualityThreshold)
                 {
                     //Draving lidar data 'x' and 'y' coordinate.
-                    if (tempDistance <= LowDistanceThreshod && detectionZoneFlag == true)
+                    if (detectionZoneFlag == true)
                     {
                         bmp = createLidarDataGraph(new Pen(Brushes.Red, 3), (float)tempAngle, (float)tempDistance, bmp, 150, 6000);
                     }
-                    else if(tempDistance > LowDistanceThreshod && tempDistance <= MidDistanceThreshod && detectionZoneFlag == true)
+                    else if(detectionZoneFlag == true)   //NOTE:13022023 zone setting dışında yar olan low mid eşikleri kaldırıldığı için silindi.Eğer kullanılacak ise zone eşikleri eklenmeli.
                     {
                         bmp = createLidarDataGraph(new Pen(Brushes.Yellow, 3), (float)tempAngle, (float)tempDistance, bmp, 150, 6000);
                     }
