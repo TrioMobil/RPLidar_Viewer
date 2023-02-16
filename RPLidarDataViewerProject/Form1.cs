@@ -44,7 +44,8 @@ namespace RPLidarDataViewerProject
         List<RPLidarData> rpLidarDatas = new List<RPLidarData>();   //NOTE: Not using now.
 
         //LidarZone Object
-        LidarZone[] zones = new LidarZone[3];
+        LidarZone[] zones = new LidarZone[2];
+        //NOTE: The zones array will be resized.(16022023)
 
         //Forklift speed.(30112022)
         public enum SpeedStatus
@@ -331,7 +332,7 @@ namespace RPLidarDataViewerProject
 
             Size zoneExcludeSize = new Size((int)Convert.ToUInt32(numericUpDownLidarExcludeZoneWidth.Value), (int)Convert.ToUInt32(numericUpDownLidarExcludeZoneHeight.Value));
             Size zoneExcludeSizeOffset = new Size((int)Convert.ToInt32(numericUpDownLidarExcludeZoneWidthOffset.Value), (int)Convert.ToInt32(numericUpDownLidarExcludeZoneHeightOffset.Value));
-            zones[2] = new LidarZone(LidarZone.ZoneDistanceTypes.Exclude, zoneExcludeSize, zoneExcludeSizeOffset);
+            //NOTE: The exclusion zone will be added to the zone array.(16022023)
 
             //lidar sample data drawing
             if (rPLidarData != null)
@@ -367,13 +368,7 @@ namespace RPLidarDataViewerProject
                 }
             }
             //Exclude Lidar zones drawing.
-            for (int excludeZoneIndex = 0; excludeZoneIndex < zones.Length; excludeZoneIndex++)
-            {
-                if (zones[excludeZoneIndex].DistanceType == LidarZone.ZoneDistanceTypes.Exclude)
-                {
-                    pictureBoxGraphics = zones[excludeZoneIndex].drawLidarZone(pictureBoxGraphics, calculateScaleRation(0.0f, 12000.0f, 0.0f, (float)pictureBoxRPLidarDataViewer.Width));
-                }
-            }
+            //NOTE: The exclusion zone will be drawn.(16022023)
 
             //Speed status check.(30112022)
             if (zones[0].SampleDetected == true)//Low type zone
@@ -860,6 +855,8 @@ namespace RPLidarDataViewerProject
 
                 var coordinate = convertPolarToCartesian(lidarData[i].Angle, lidarData[i].Distance);
 
+                //NOTE: tüm zone alanları için ayrı ayrı yazılan for döngüsü birleştirilebilir (13022023).
+
                 //Lidar sample in Mid zones check.
                 for (int MidzonesIndex = 0; MidzonesIndex < lidarZones.Length; MidzonesIndex++)
                 {
@@ -884,25 +881,12 @@ namespace RPLidarDataViewerProject
                     }
                 }
 
-                //Lidar sample in Exclude zones check.
-                for (int excludeZonesIndex = 0; excludeZonesIndex < lidarZones.Length; excludeZonesIndex++)
-                {
-                    if (lidarZones[excludeZonesIndex].checkInTheZone((float)coordinate.x, (float)(coordinate.y)) == true)
-                    {
-                        if (lidarZones[excludeZonesIndex].DistanceType == LidarZone.ZoneDistanceTypes.Exclude)
-                        {
-                            lidarSampleDrawPen.Brush = Brushes.Blue;
-                        }
-                    }
-                }
-
-                //NOTE: tüm zone alanları için ayrı ayrı yazılan for döngüsü birleştirilebilir (13022023).
-
                 graphicsObject = drawLidarDataSample(graphicsObject, pictureBoxObject, lidarSampleDrawPen, lidarData[i].Angle, lidarData[i].Distance, 150, 6000);
             }
 
             return (graphicsObject);
         }
+        //NOTE: Detected datas drawing of Exclude zone will be added in the "drawLidarData" function.(16022023)
 
 
         //Tread cakısması hatasının giderilmesi icin kullanılmıstır.
@@ -1119,6 +1103,7 @@ namespace RPLidarDataViewerProject
 
                 return detectedOfSample;
             }
+            //NOTE: "checkInTheZone" function will be refactored.(16022023)
             public void clearDetectedSampleCount()//(30112022)
             {
                 this.DetectedSampleCount = 0;
