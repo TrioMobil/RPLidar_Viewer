@@ -311,6 +311,7 @@
             this.comboBoxSeriPortList.Name = "comboBoxSeriPortList";
             this.comboBoxSeriPortList.Size = new System.Drawing.Size(109, 21);
             this.comboBoxSeriPortList.TabIndex = 9;
+            this.comboBoxSeriPortList.Click += new System.EventHandler(this.comboBoxSeriPortList_Click);
             // 
             // groupBoxLidarViewer
             // 

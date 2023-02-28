@@ -66,9 +66,11 @@ namespace RPLidarDataViewerProject
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void comboBoxSeriPortList_Click(object sender, EventArgs e)
         {
             //Port names of serialport added in to comboBox.
+            comboBoxSeriPortList.Items.Clear();
+
             string[] serialPortListArray = SerialPort.GetPortNames();
             foreach (string serialPort in serialPortListArray)
             {
@@ -77,6 +79,11 @@ namespace RPLidarDataViewerProject
 
             int serialPortCounts = comboBoxSeriPortList.Items.Count;
             if (serialPortCounts > 0) comboBoxSeriPortList.SelectedIndex = 0;
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            comboBoxSeriPortList_Click(sender, e);
         }
 
         private void buttonOpenFile_Click(object sender, EventArgs e)
@@ -1110,6 +1117,8 @@ namespace RPLidarDataViewerProject
                 this.SampleDetected = false;
             }
         }
+
+        
     }
 }
 /*NOTE: 28/11/2022 yapılacak notu!
