@@ -16,6 +16,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static RPLidarDataViewerProject.Form1;
+using static RPLidarDataViewerProject.Form1.LidarZone;
 using static System.Windows.Forms.AxHost;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 
@@ -47,7 +48,7 @@ namespace RPLidarDataViewerProject
         LidarZone[] zones = new LidarZone[2];
         //NOTE: The zones array will be resized.(16022023)
 
-        //Forklift speed.(30112022)
+        //Forklift speed status defination
         public enum SpeedStatus
         {
             LowSpeed,
@@ -331,11 +332,11 @@ namespace RPLidarDataViewerProject
             //LidarZone data reading and zone creating.
             Size zoneLowSize = new Size((int)Convert.ToUInt32(numericUpDownLidarLowZoneWidth.Value), (int)Convert.ToUInt32(numericUpDownLidarLowZoneHeight.Value));
             Size zoneLowSizeOffset = new Size((int)Convert.ToInt32(numericUpDownLidarLowZoneWidthOffset.Value), (int)Convert.ToInt32(numericUpDownLidarLowZoneHeightOffset.Value));
-            zones[0] = new LidarZone(LidarZone.ZoneDistanceTypes.Low, zoneLowSize, zoneLowSizeOffset);
+            zones[0] = new LidarZone(LidarZone.ZoneTypes.Low, zoneLowSize, zoneLowSizeOffset);
 
             Size zoneMidSize = new Size((int)Convert.ToUInt32(numericUpDownLidarMidZoneWidth.Value), (int)Convert.ToUInt32(numericUpDownLidarMidZoneHeight.Value));
             Size zoneMidSizeOffset = new Size((int)Convert.ToInt32(numericUpDownLidarMidZoneWidthOffset.Value), (int)Convert.ToInt32(numericUpDownLidarMidZoneHeightOffset.Value));
-            zones[1] = new LidarZone(LidarZone.ZoneDistanceTypes.Mid, zoneMidSize, zoneMidSizeOffset);
+            zones[1] = new LidarZone(LidarZone.ZoneTypes.Mid, zoneMidSize, zoneMidSizeOffset);
 
             Size zoneExcludeSize = new Size((int)Convert.ToUInt32(numericUpDownLidarExcludeZoneWidth.Value), (int)Convert.ToUInt32(numericUpDownLidarExcludeZoneHeight.Value));
             Size zoneExcludeSizeOffset = new Size((int)Convert.ToInt32(numericUpDownLidarExcludeZoneWidthOffset.Value), (int)Convert.ToInt32(numericUpDownLidarExcludeZoneHeightOffset.Value));
@@ -358,18 +359,18 @@ namespace RPLidarDataViewerProject
             //pictureBoxGraphics = zone.drawLidarZone(pictureBoxGraphics);//Unscaled zone.
             //pictureBoxGraphics = zone.drawLidarZone(pictureBoxGraphics, calculateScaleRation(0.0f, 12000.0f, 0.0f, (float)pictureBoxRPLidarDataViewer.Width));
 
-            //Mid Lidar zones drawing.
-            for (int midZoneIndex = 0; midZoneIndex < zones.Length; midZoneIndex++)
+            //Zones drawing.
+            for (int midZoneIndex = 0; midZoneIndex < zones.Length; midZoneIndex++) //Mid Lidar zones drawing.
             {
-                if (zones[midZoneIndex].DistanceType == LidarZone.ZoneDistanceTypes.Mid)
+                if (zones[midZoneIndex].DistanceType == LidarZone.ZoneTypes.Mid)
                 {
                     pictureBoxGraphics = zones[midZoneIndex].drawLidarZone(pictureBoxGraphics, calculateScaleRation(0.0f, 12000.0f, 0.0f, (float)pictureBoxRPLidarDataViewer.Width));
                 }
             }
-            //Low Lidar zones drawing.
-            for (int lowZoneIndex = 0; lowZoneIndex < zones.Length; lowZoneIndex++)
+            
+            for (int lowZoneIndex = 0; lowZoneIndex < zones.Length; lowZoneIndex++) //Low Lidar zones drawing.
             {
-                if (zones[lowZoneIndex].DistanceType == LidarZone.ZoneDistanceTypes.Low)
+                if (zones[lowZoneIndex].DistanceType == LidarZone.ZoneTypes.Low)
                 {
                     pictureBoxGraphics = zones[lowZoneIndex].drawLidarZone(pictureBoxGraphics, calculateScaleRation(0.0f, 12000.0f, 0.0f, (float)pictureBoxRPLidarDataViewer.Width));
                 }
@@ -378,7 +379,7 @@ namespace RPLidarDataViewerProject
             //NOTE: The exclusion zone will be drawn.(16022023)
 
             //Speed status check.(30112022)
-            if (zones[0].SampleDetected == true)//Low type zone
+            if (zones[0].Status == LidarZone.ZoneStatusTypes.ZoneActive)//Low type zone
             {
                 //Timeout counter Stop edilip sıfırlanıyor. Aynı zamanda Mid->Low veya Max->Low geçişlerinde timer çalıştı ise sayılmış değeri siliyor.(17012023)
                 if (timer1.Enabled == true)
@@ -393,7 +394,7 @@ namespace RPLidarDataViewerProject
 
                 panelSpeedStatus.BackColor = Color.Red;
             }
-            else if (zones[1].SampleDetected == true)//Mid type zone
+            else if (zones[1].Status == LidarZone.ZoneStatusTypes.ZoneActive)//Mid type zone
             {
                 if (lidarZoneOldState == SpeedStatus.LowSpeed)
                 {
@@ -759,10 +760,10 @@ namespace RPLidarDataViewerProject
 
             //Lidar sample in zone check.
             var coordinate = convertPolarToCartesian(angleDataOfLidar, distaceInAngleDataOflidar_mm);
-            if (lidarZone.checkInTheZone((float)coordinate.x, (float)(coordinate.y)) == true)
+            if (lidarZone.checkForTheSampleOfLidar((float)coordinate.x, (float)(coordinate.y)) == true)
             {
-                if (lidarZone.DistanceType == LidarZone.ZoneDistanceTypes.Mid) pen.Brush = Brushes.Yellow;
-                if (lidarZone.DistanceType == LidarZone.ZoneDistanceTypes.Low) pen.Brush = Brushes.Red; //(30112022)
+                if (lidarZone.DistanceType == LidarZone.ZoneTypes.Mid) pen.Brush = Brushes.Yellow;
+                if (lidarZone.DistanceType == LidarZone.ZoneTypes.Low) pen.Brush = Brushes.Red; //(30112022)
             }
             else
             {
@@ -790,11 +791,11 @@ namespace RPLidarDataViewerProject
 
         //    //Lidar sample in zone check.
         //    var coordinate = convertPolarToCartesian(angleDataOfLidar, distaceInAngleDataOflidar_mm);
-        //    if (lidarZones[0].checkInTheZone((float)coordinate.x, (float)(coordinate.y)) == true)
+        //    if (lidarZones[0].checkForTheSampleOfLidar((float)coordinate.x, (float)(coordinate.y)) == true)
         //    {
         //        pen.Brush = Brushes.Red;
         //    }
-        //    else if (lidarZones[1].checkInTheZone((float)coordinate.x, (float)(coordinate.y)) == true)
+        //    else if (lidarZones[1].checkForTheSampleOfLidar((float)coordinate.x, (float)(coordinate.y)) == true)
         //    {
         //        pen.Brush = Brushes.Yellow;
         //    }
@@ -817,7 +818,7 @@ namespace RPLidarDataViewerProject
 
 
         //Lidar Data drawer functions.
-        
+
         public Graphics drawLidarData(RPLidarData[] lidarData, Graphics graphicsObject, PictureBox pictureBoxObject)
         {
             //Lidar viewer backgroung create
@@ -847,6 +848,9 @@ namespace RPLidarDataViewerProject
         }
         public Graphics drawLidarData(RPLidarData[] lidarData, Graphics graphicsObject, PictureBox pictureBoxObject, LidarZone[] lidarZones)
         {
+            //Lidar zone type flags.
+            LidarZone.ZoneTypes activeZoneTypeFlag = LidarZone.ZoneTypes.Undefined;
+
             //Lidar viewer backgroung create
             graphicsObject = drawLidarViwerBackground(graphicsObject, pictureBoxObject);
 
@@ -854,38 +858,58 @@ namespace RPLidarDataViewerProject
             Pen lidarSampleDrawPen = new Pen(Brushes.Purple, 3);
             for (int i = 0; i < lidarData.Length; i++)
             {
-                //Buraya lidar data kontrıolü ekle continuo kullan.!!!!(30112022) Data okumaya ekleyemez isen buraya ekle.buraya şart olarak ekle.
+                //Check lidar sample quality.
                 if (checkLidarData(lidarData[i]) == false) continue;
 
                 //Default color assignment for each lidar sample.
                 lidarSampleDrawPen.Brush = Brushes.Purple;
 
+                //Polar to cartesian converter.
                 var coordinate = convertPolarToCartesian(lidarData[i].Angle, lidarData[i].Distance);
 
-                //NOTE: tüm zone alanları için ayrı ayrı yazılan for döngüsü birleştirilebilir (13022023).
+                //Clear active zone type flag.
+                activeZoneTypeFlag = LidarZone.ZoneTypes.Undefined;
 
-                //Lidar sample in Mid zones check.
-                for (int MidzonesIndex = 0; MidzonesIndex < lidarZones.Length; MidzonesIndex++)
+                //Lidar sample in Zones check.
+                for (int lowZoneIndex = 0; lowZoneIndex < lidarZones.Length; lowZoneIndex++)    //Checks for Low zones.
                 {
-                    if (lidarZones[MidzonesIndex].checkInTheZone((float)coordinate.x, (float)(coordinate.y)) == true)
+                    if (lidarZones[lowZoneIndex].DistanceType != LidarZone.ZoneTypes.Low) continue;
+
+                    if (lidarZones[lowZoneIndex].checkForTheSampleOfLidar((float)coordinate.x, (float)(coordinate.y)) == true)
                     {
-                        if (lidarZones[MidzonesIndex].DistanceType == LidarZone.ZoneDistanceTypes.Mid)
+                        activeZoneTypeFlag = LidarZone.ZoneTypes.Low;
+                        lidarZones[lowZoneIndex].increaseSampleCount();
+                        lidarZones[lowZoneIndex].setZoneStatus(ZoneStatusTypes.ZoneActive);
+                    }
+                }
+
+                if (activeZoneTypeFlag != LidarZone.ZoneTypes.Exclude && activeZoneTypeFlag != LidarZone.ZoneTypes.Low) //Checks for Mid zones.
+                {
+                    for (int midZoneIndex = 0; midZoneIndex < lidarZones.Length; midZoneIndex++)
+                    {
+                        if (lidarZones[midZoneIndex].DistanceType != LidarZone.ZoneTypes.Mid) continue;
+
+                        if (lidarZones[midZoneIndex].checkForTheSampleOfLidar((float)coordinate.x, (float)(coordinate.y)) == true)
                         {
-                            lidarSampleDrawPen.Brush = Brushes.Yellow;
+                            activeZoneTypeFlag = LidarZone.ZoneTypes.Mid;
+                            lidarZones[midZoneIndex].increaseSampleCount();
+                            lidarZones[midZoneIndex].setZoneStatus(ZoneStatusTypes.ZoneActive);
                         }
                     }
                 }
 
-                //Lidar sample in Low zones check.
-                for (int LowZonesIndex = 0; LowZonesIndex < lidarZones.Length; LowZonesIndex++)
+                //Set color of lidar sample to draw. And draw lidar sample.
+                switch (activeZoneTypeFlag)
                 {
-                    if (lidarZones[LowZonesIndex].checkInTheZone((float)coordinate.x, (float)(coordinate.y)) == true)
-                    {
-                        if (lidarZones[LowZonesIndex].DistanceType == LidarZone.ZoneDistanceTypes.Low)
-                        {
-                            lidarSampleDrawPen.Brush = Brushes.Red;
-                        }
-                    }
+                    case LidarZone.ZoneTypes.Low:
+                        lidarSampleDrawPen.Brush = Brushes.Red;
+                        break;
+                    case LidarZone.ZoneTypes.Mid:
+                        lidarSampleDrawPen.Brush = Brushes.Yellow;
+                        break;
+                    case LidarZone.ZoneTypes.Undefined:
+                        lidarSampleDrawPen.Brush = Brushes.Purple;
+                        break;
                 }
 
                 graphicsObject = drawLidarDataSample(graphicsObject, pictureBoxObject, lidarSampleDrawPen, lidarData[i].Angle, lidarData[i].Distance, 150, 6000);
@@ -893,7 +917,6 @@ namespace RPLidarDataViewerProject
 
             return (graphicsObject);
         }
-        //NOTE: Detected datas drawing of Exclude zone will be added in the "drawLidarData" function.(16022023)
 
 
         //Tread cakısması hatasının giderilmesi icin kullanılmıstır.
@@ -915,24 +938,31 @@ namespace RPLidarDataViewerProject
         //Zone Class Definition
         public class LidarZone
         {
-            public enum ZoneDistanceTypes
+            public enum ZoneTypes
             {
+                Undefined,
                 Exclude,
                 Low,
                 Mid,
             }
 
-            private ZoneDistanceTypes distanceType;
+            public enum ZoneStatusTypes
+            {
+                ZonePassive,
+                ZoneActive,
+            }
+
+            private ZoneTypes distanceType;
             private Size size;
             private Size offsetSize;
             private Point positionOfStarting;
             private Point positionOfStartingForGraphic;
             private Point positionOfCornerMin;
             private Point positionOfCornerMax;
-            private bool sampleDetected;
+            private ZoneStatusTypes status;
             private uint detectedSampleCount;
 
-            public ZoneDistanceTypes DistanceType
+            public ZoneTypes DistanceType
             {
                 get{return this.distanceType;}
                 set{this.distanceType = value;}
@@ -979,10 +1009,10 @@ namespace RPLidarDataViewerProject
             {
                 get{return this.positionOfCornerMax;}
             }
-            public bool SampleDetected
+            public ZoneStatusTypes Status
             {
-                get { return this.sampleDetected; }
-                set { this.sampleDetected = value; }
+                get { return this.status; }
+                set { this.status = value; }
             }
             public uint DetectedSampleCount
             {
@@ -993,7 +1023,7 @@ namespace RPLidarDataViewerProject
 
             public LidarZone()
             {
-                this.DistanceType = ZoneDistanceTypes.Mid;
+                this.DistanceType = ZoneTypes.Undefined;
                 this.Size = new Size(0, 0);
                 this.OffsetSize = new Size(0, 0);
                 this.positionOfStarting = calculateZoneStartPosition(this.Size, this.OffsetSize);
@@ -1001,10 +1031,10 @@ namespace RPLidarDataViewerProject
                 var corner = calculateTheMaxAndMinCornerCoordinatesOfTheZone(this.Size, this.positionOfStarting);//NOTE: Bu fonksiyon değer döndüren hale getirilecek döndürdüğü yapı tüm pozisyonları içeren bir yapı şekilnde olabilir.Bakılacak!! Şuan corner max min şeklinde iki ayrı Point nesnesi.
                 this.positionOfCornerMin = corner.Min;
                 this.positionOfCornerMax = corner.Max;
-                this.SampleDetected = false;
+                this.Status = ZoneStatusTypes.ZonePassive;
                 this.DetectedSampleCount = 0;
             }
-            public LidarZone(ZoneDistanceTypes zoneDistanceType, Size zoneSize, Size zoneOffsetSize)
+            public LidarZone(ZoneTypes zoneDistanceType, Size zoneSize, Size zoneOffsetSize)
             {
                 this.DistanceType = zoneDistanceType;
                 this.Size = new Size(zoneSize.Width, zoneSize.Height);
@@ -1014,7 +1044,7 @@ namespace RPLidarDataViewerProject
                 var corner = calculateTheMaxAndMinCornerCoordinatesOfTheZone(this.Size, this.positionOfStarting);//NOTE: Bu fonksiyon değer döndüren hale getirilecek döndürdüğü yapı tüm pozisyonları içeren bir yapı şekilnde olabilir.Bakılacak!! Şuan corner max min şeklinde iki ayrı Point nesnesi.
                 this.positionOfCornerMin = corner.Min;
                 this.positionOfCornerMax = corner.Max;
-                this.SampleDetected = false;
+                this.Status = ZoneStatusTypes.ZonePassive;
                 this.DetectedSampleCount = 0;
             }
 
@@ -1062,9 +1092,9 @@ namespace RPLidarDataViewerProject
             {
                 Pen zoneDrawPen = new Pen(Brushes.White, 2);
 
-                if (this.DistanceType == ZoneDistanceTypes.Exclude) zoneDrawPen.Brush = Brushes.Blue;
-                if (this.DistanceType == ZoneDistanceTypes.Low) zoneDrawPen.Brush = Brushes.Red;
-                if (this.DistanceType == ZoneDistanceTypes.Mid) zoneDrawPen.Brush = Brushes.Yellow;
+                if (this.DistanceType == ZoneTypes.Exclude) zoneDrawPen.Brush = Brushes.Blue;
+                if (this.DistanceType == ZoneTypes.Low) zoneDrawPen.Brush = Brushes.Red;
+                if (this.DistanceType == ZoneTypes.Mid) zoneDrawPen.Brush = Brushes.Yellow;
 
                 Rectangle zoneRectangle = new Rectangle(this.PositionOfStartingForGraphic, this.Size);
                 graphicsObject.DrawRectangle(zoneDrawPen, zoneRectangle);
@@ -1075,9 +1105,9 @@ namespace RPLidarDataViewerProject
             {
                 Pen zoneDrawPen = new Pen(Brushes.White, 2);
 
-                if (this.DistanceType == ZoneDistanceTypes.Exclude) zoneDrawPen.Brush = Brushes.Blue;
-                if (this.DistanceType == ZoneDistanceTypes.Low) zoneDrawPen.Brush = Brushes.Red;
-                if (this.DistanceType == ZoneDistanceTypes.Mid) zoneDrawPen.Brush = Brushes.Yellow;
+                if (this.DistanceType == ZoneTypes.Exclude) zoneDrawPen.Brush = Brushes.Blue;
+                if (this.DistanceType == ZoneTypes.Low) zoneDrawPen.Brush = Brushes.Red;
+                if (this.DistanceType == ZoneTypes.Mid) zoneDrawPen.Brush = Brushes.Yellow;
 
                 Point scaledStartPosition = new Point();
                 Size scaledSize = new Size();
@@ -1092,33 +1122,43 @@ namespace RPLidarDataViewerProject
 
                 return graphicsObject;
             }
-            public bool checkInTheZone(float coordinateX, float coordinateY)
+            public void increaseSampleCount()
             {
-                bool detectedOfSample = false;
+                this.DetectedSampleCount++;
+            }
+            public void setZoneStatus(ZoneStatusTypes status)
+            {
+                this.Status = status;
+            }
+            public bool checkForTheSampleOfLidar(float coordinateX, float coordinateY)
+            {
+                bool sampleInZoneFlag = false;
 
-                if((coordinateX >= this.positionOfCornerMin.X) && (coordinateY >= this.positionOfCornerMin.Y) && (coordinateX <= this.positionOfCornerMax.X) && (coordinateY <= this.positionOfCornerMax.Y))
+                if ((coordinateX >= this.positionOfCornerMin.X) && (coordinateY >= this.positionOfCornerMin.Y) && (coordinateX <= this.positionOfCornerMax.X) && (coordinateY <= this.positionOfCornerMax.Y))
                 {
-                    detectedOfSample = true;
-
-                    this.DetectedSampleCount++;//(30112022)
-                    this.SampleDetected = true;
+                    sampleInZoneFlag = true;
                 }
                 else
                 {
-                    detectedOfSample = false;
+                    sampleInZoneFlag = false;
                 }
 
-                return detectedOfSample;
+                //status set for any sample. status will be set with constructor function.
+                //if (sampleInZoneFlag == true)
+                //{
+                //    setZoneStatus(true);
+                //}
+
+                return sampleInZoneFlag;
             }
-            //NOTE: "checkInTheZone" function will be refactored.(16022023)
             public void clearDetectedSampleCount()//(30112022)
             {
                 this.DetectedSampleCount = 0;
-                this.SampleDetected = false;
+                this.Status = ZoneStatusTypes.ZonePassive;
             }
         }
 
-        
+
     }
 }
 /*NOTE: 28/11/2022 yapılacak notu!
