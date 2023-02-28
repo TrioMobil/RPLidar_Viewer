@@ -45,8 +45,7 @@ namespace RPLidarDataViewerProject
         List<RPLidarData> rpLidarDatas = new List<RPLidarData>();   //NOTE: Not using now.
 
         //LidarZone Object
-        LidarZone[] zones = new LidarZone[2];
-        //NOTE: The zones array will be resized.(16022023)
+        LidarZone[] zones = new LidarZone[3];
 
         //Forklift speed status defination
         public enum SpeedStatus
@@ -340,7 +339,7 @@ namespace RPLidarDataViewerProject
 
             Size zoneExcludeSize = new Size((int)Convert.ToUInt32(numericUpDownLidarExcludeZoneWidth.Value), (int)Convert.ToUInt32(numericUpDownLidarExcludeZoneHeight.Value));
             Size zoneExcludeSizeOffset = new Size((int)Convert.ToInt32(numericUpDownLidarExcludeZoneWidthOffset.Value), (int)Convert.ToInt32(numericUpDownLidarExcludeZoneHeightOffset.Value));
-            //NOTE: The exclusion zone will be added to the zone array.(16022023)
+            zones[2] = new LidarZone(LidarZone.ZoneTypes.Exclude, zoneExcludeSize, zoneExcludeSizeOffset);
 
             //lidar sample data drawing
             if (rPLidarData != null)
@@ -375,8 +374,14 @@ namespace RPLidarDataViewerProject
                     pictureBoxGraphics = zones[lowZoneIndex].drawLidarZone(pictureBoxGraphics, calculateScaleRation(0.0f, 12000.0f, 0.0f, (float)pictureBoxRPLidarDataViewer.Width));
                 }
             }
-            //Exclude Lidar zones drawing.
-            //NOTE: The exclusion zone will be drawn.(16022023)
+            
+            for (int excludeZoneIndex = 0; excludeZoneIndex < zones.Length; excludeZoneIndex++) //Exclude Lidar zones drawing.
+            {
+                if (zones[excludeZoneIndex].DistanceType == LidarZone.ZoneTypes.Exclude)
+                {
+                    pictureBoxGraphics = zones[excludeZoneIndex].drawLidarZone(pictureBoxGraphics, calculateScaleRation(0.0f, 12000.0f, 0.0f, (float)pictureBoxRPLidarDataViewer.Width));
+                }
+            }
 
             //Speed status check.(30112022)
             if (zones[0].Status == LidarZone.ZoneStatusTypes.ZoneActive)//Low type zone
@@ -871,15 +876,30 @@ namespace RPLidarDataViewerProject
                 activeZoneTypeFlag = LidarZone.ZoneTypes.Undefined;
 
                 //Lidar sample in Zones check.
-                for (int lowZoneIndex = 0; lowZoneIndex < lidarZones.Length; lowZoneIndex++)    //Checks for Low zones.
+                for (int excludeZoneIndex = 0; excludeZoneIndex < lidarZones.Length; excludeZoneIndex++)    //Checks for Exclude zones.
                 {
-                    if (lidarZones[lowZoneIndex].DistanceType != LidarZone.ZoneTypes.Low) continue;
+                    if (lidarZones[excludeZoneIndex].DistanceType != LidarZone.ZoneTypes.Exclude) continue;
 
-                    if (lidarZones[lowZoneIndex].checkForTheSampleOfLidar((float)coordinate.x, (float)(coordinate.y)) == true)
+                    if (lidarZones[excludeZoneIndex].checkForTheSampleOfLidar((float)coordinate.x, (float)(coordinate.y)) == true)
                     {
-                        activeZoneTypeFlag = LidarZone.ZoneTypes.Low;
-                        lidarZones[lowZoneIndex].increaseSampleCount();
-                        lidarZones[lowZoneIndex].setZoneStatus(ZoneStatusTypes.ZoneActive);
+                        activeZoneTypeFlag = LidarZone.ZoneTypes.Exclude;
+                        lidarZones[excludeZoneIndex].increaseSampleCount();
+                        lidarZones[excludeZoneIndex].setZoneStatus(ZoneStatusTypes.ZoneActive);
+                    }
+                }
+
+                if (activeZoneTypeFlag != LidarZone.ZoneTypes.Exclude)    //Checks for Low zones.
+                {
+                    for (int lowZoneIndex = 0; lowZoneIndex < lidarZones.Length; lowZoneIndex++)
+                    {
+                        if (lidarZones[lowZoneIndex].DistanceType != LidarZone.ZoneTypes.Low) continue;
+
+                        if (lidarZones[lowZoneIndex].checkForTheSampleOfLidar((float)coordinate.x, (float)(coordinate.y)) == true)
+                        {
+                            activeZoneTypeFlag = LidarZone.ZoneTypes.Low;
+                            lidarZones[lowZoneIndex].increaseSampleCount();
+                            lidarZones[lowZoneIndex].setZoneStatus(ZoneStatusTypes.ZoneActive);
+                        }
                     }
                 }
 
@@ -901,6 +921,9 @@ namespace RPLidarDataViewerProject
                 //Set color of lidar sample to draw. And draw lidar sample.
                 switch (activeZoneTypeFlag)
                 {
+                    case LidarZone.ZoneTypes.Exclude:
+                        lidarSampleDrawPen.Brush = Brushes.Blue;
+                        break;
                     case LidarZone.ZoneTypes.Low:
                         lidarSampleDrawPen.Brush = Brushes.Red;
                         break;

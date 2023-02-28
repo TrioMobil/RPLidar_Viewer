@@ -424,7 +424,7 @@
             this.numericUpDownLidarMidZoneHeightOffset.Size = new System.Drawing.Size(60, 20);
             this.numericUpDownLidarMidZoneHeightOffset.TabIndex = 40;
             this.numericUpDownLidarMidZoneHeightOffset.Value = new decimal(new int[] {
-            1250,
+            500,
             0,
             0,
             0});
@@ -619,7 +619,7 @@
             this.numericUpDownLidarLowZoneHeightOffset.Size = new System.Drawing.Size(60, 20);
             this.numericUpDownLidarLowZoneHeightOffset.TabIndex = 40;
             this.numericUpDownLidarLowZoneHeightOffset.Value = new decimal(new int[] {
-            500,
+            250,
             0,
             0,
             0});
@@ -819,7 +819,7 @@
             this.numericUpDownLidarExcludeZoneHeightOffset.Size = new System.Drawing.Size(60, 20);
             this.numericUpDownLidarExcludeZoneHeightOffset.TabIndex = 52;
             this.numericUpDownLidarExcludeZoneHeightOffset.Value = new decimal(new int[] {
-            500,
+            250,
             0,
             0,
             0});
